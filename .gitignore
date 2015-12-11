@@ -1,3 +1,15 @@
+### userfrosting ignores ###
+*.komodoproject
+.DS_Store
+_meta/*
+public/test/*
+userfrosting/config-userfrosting.php
+public/js/min/*
+public/css/min/*
+
+
+
+### windows ignores ###
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
