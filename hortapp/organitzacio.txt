@@ -1,0 +1,157 @@
+formBancal
+ 
+ CREATE
+
+ EDIT
+ - carregar dades entitat editada
+
+
+formParcela
+ 
+ CREATE
+ - load idBancal
+
+ EDIT
+ - carregar dades entitat editada
+
+
+formPlanta
+ 
+ CREATE
+ - load families (select)
+ - load grups (select)
+ - data_ini (datepicker)
+ - data_fi (datepicker)
+
+ EDIT
+ - carregar dades entitat editada
+ - load families (select)
+ - load grups (select)
+ - data_ini (datepicker)
+ - data_fi (datepicker)
+
+
+formPlagaPlanta
+ 
+ CREATE
+ - load plagues (select)
+
+ EDIT
+ - carregar dades entitat editada
+ - load plagues (select)
+
+
+formTascaPlanta
+ 
+ CREATE
+ 
+ EDIT
+ - carregar dades entitat editada
+
+
+formImgPlanta
+ //TODO 
+ CREATE 
+
+ EDIT
+ - carregar dades entitat editada
+
+formPlaga
+ 
+ CREATE
+ 
+ EDIT
+ - carregar dades entitat editada
+
+
+formPlantaPlaga
+ 
+ CREATE
+ - load plantes (select)
+
+ EDIT
+ - carregar dades entitat editada
+ - load plantes (select)
+
+
+formRemeiPlaga
+ 
+ CREATE
+ -load remeis (select)
+
+ EDIT
+ - carregar dades entitat editada
+ -load remeis (select)
+
+
+formImgPlaga
+ //TODO 
+ CREATE
+
+ EDIT
+ - carregar dades entitat editada
+
+
+formRemei
+ 
+ CREATE
+ 
+ EDIT
+ - carregar dades entitat editada
+
+
+formPlagaRemei
+ 
+ CREATE
+ - load remeis (select)
+
+ EDIT
+ - carregar dades entitat editada
+ - load remeis (select)
+
+
+formTascaRemei
+ 
+ CREATE
+ 
+ EDIT
+ - carregar dades entitat editada
+
+
+formCultiu
+ 
+ CREATE
+ - load idParcela
+ - load plantes (select)
+ - data_ini (datepicker)
+
+
+ EDIT
+ - carregar dades entitat editada
+ - load plantes (select)
+ - data_ini (datepicker)
+
+
+formTascaPuntual
+ 
+ CREATE
+ - load idParcela
+
+ EDIT
+ - carregar dades entitat editada
+ - load idParcela
+
+
+formTascaFixa
+ 
+ CREATE
+ - load mes (desplegable)
+
+ EDIT
+ - carregar dades entitat editada
+ - load mes (desplegable)
+
+
+formDrop
+ //TODO
+ 

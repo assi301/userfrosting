@@ -11,7 +11,7 @@
 
     use UserFrosting as UF;
    
-    // Front page
+// Front page
     $app->get('/', function () use ($app) {
         // This if-block detects if mod_rewrite is enabled.
         // This is just an anti-noob device, remove it if you know how to read the docs and/or breathe through your nose.
@@ -51,7 +51,7 @@
         }
     })->name('uri_home');
 
-    /********** FEATURE PAGES **********/
+/********** FEATURE PAGES **********/
     
     $app->get('/dashboard/?', function () use ($app) {    
         // Access-controlled page
@@ -61,6 +61,63 @@
         
         $app->render('dashboard.twig', []);          
     });
+
+
+
+
+
+
+/************ HORTAPP ************/
+$app->get('/account/groups/?', function () use ($app) {   
+    // Access-controlled page
+    if (!$app->user->checkAccess('uri_account-groups')){
+        $app->notFound();
+    }   
+
+    $app->render('account-groups.twig', [
+        'groups' => $app->user->getGroups()
+    ]);  
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     $app->get('/zerg/?', function () use ($app) {    
         // Access-controlled page
@@ -71,7 +128,7 @@
         $app->render('users/zerg.twig'); 
     });    
        
-    /********** ACCOUNT MANAGEMENT INTERFACE **********/
+/********** ACCOUNT MANAGEMENT INTERFACE **********/
     
     $app->get('/account/:action/?', function ($action) use ($app) {    
         // Forward to installation if not complete
@@ -119,7 +176,7 @@
         }
     });    
     
-    /********** USER MANAGEMENT INTERFACE **********/
+/********** USER MANAGEMENT INTERFACE **********/
     
     // List users
     $app->get('/users/?', function () use ($app) {
@@ -180,7 +237,7 @@
         return $controller->deleteUser($user_id);
     });
     
-    /********** GROUP MANAGEMENT INTERFACE **********/
+/********** GROUP MANAGEMENT INTERFACE **********/
     
     // List groups
     $app->get('/groups/?', function () use ($app) {
@@ -228,7 +285,7 @@
         return $controller->deleteGroup($group_id);
     });
     
-    /********** GROUP AUTH RULES INTERFACE **********/
+/********** GROUP AUTH RULES INTERFACE **********/
     
     // Group auth creation form
     $app->get('/forms/groups/g/:group_id/auth/?', function ($group_id) use ($app) {
@@ -262,7 +319,7 @@
         return $controller->deleteAuthRule($rule_id);
     });  
         
-    /************ ADMIN TOOLS *************/
+/************ ADMIN TOOLS *************/
     
     $app->get('/config/settings/?', function () use ($app) {
         $controller = new UF\AdminController($app);
@@ -320,7 +377,7 @@
         echo "</pre>";
     });      
        
-    /************ INSTALLER *************/
+/************ INSTALLER *************/
 
     $app->get('/install/?', function () use ($app) {
         $controller = new UF\InstallController($app);
@@ -354,7 +411,7 @@
         }   
     });
     
-    /************ API *************/
+/************ API *************/
     
     $app->get('/api/users/?', function () use ($app) {
         $controller = new UF\ApiController($app);
@@ -362,7 +419,7 @@
     });
     
     
-    /************ MISCELLANEOUS UTILITY ROUTES *************/
+/************ MISCELLANEOUS UTILITY ROUTES *************/
     
     // Generic confirmation dialog
     $app->get('/forms/confirm/?', function () use ($app) {
@@ -421,4 +478,8 @@
         }
     });
     
+
+
+
+/******app run *******/
     $app->run();

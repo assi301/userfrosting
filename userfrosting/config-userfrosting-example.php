@@ -41,9 +41,9 @@
             ],
             'db'            =>  [
                 'db_host'  => 'localhost',
-                'db_name'  => 'userfrosting',
-                'db_user'  => 'admin',
-                'db_pass'  => 'password',
+                'db_name'  => 'test',
+                'db_user'  => 'hortapp',
+                'db_pass'  => 'hortapp',
                 'db_prefix'=> 'uf_'
             ],
             'mail' => 'smtp',
@@ -90,9 +90,9 @@
             ],            
             'db'            =>  [
                 'db_host'  => 'localhost',
-                'db_name'  => 'userfrosting',
-                'db_user'  => 'admin',
-                'db_pass'  => 'password',
+                'db_name'  => 'test',
+                'db_user'  => 'hortapp',
+                'db_pass'  => 'hortapp',
                 'db_prefix'=> 'uf_'
             ],
             'mail' => 'smtp',

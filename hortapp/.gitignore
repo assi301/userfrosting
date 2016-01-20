@@ -1,0 +1,9 @@
+# Ignored files and folders
+
+# Sublime files
+*sublime-workspace
+hortapp.sublime-workspace
+
+# Log
+log/hortapp.log
+*.log

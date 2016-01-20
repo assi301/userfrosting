@@ -1,0 +1,2288 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"_",
+				"_POST"
+			],
+			[
+				"date",
+				"datepicker"
+			],
+			[
+				"toda",
+				"todayHighlight"
+			],
+			[
+				"dateToSq",
+				"dateToSqlDM"
+			],
+			[
+				"dateToSql",
+				"dateToSqlDMY"
+			],
+			[
+				"dateTdmy",
+				"dateToWebDMY"
+			],
+			[
+				"applink-form-",
+				"applink-form-id"
+			],
+			[
+				"hidd",
+				"hiddenDiv"
+			],
+			[
+				"create",
+				"create"
+			],
+			[
+				"title",
+				"title"
+			],
+			[
+				"svg",
+				"svgname"
+			],
+			[
+				"parc",
+				"parcelesSVG"
+			],
+			[
+				"bancal",
+				"bancal_empty"
+			],
+			[
+				"supe",
+				"superficieLliure"
+			],
+			[
+				"ff",
+				"F5F5F5"
+			],
+			[
+				"supbanca",
+				"superficieBancal"
+			],
+			[
+				"subanca",
+				"superficieBancal"
+			],
+			[
+				"superfi",
+				"superficieParceles"
+			],
+			[
+				"drop",
+				"dropButton"
+			],
+			[
+				"edi",
+				"editButton"
+			],
+			[
+				"ed",
+				"editButton"
+			],
+			[
+				"NAV",
+				"NAV"
+			],
+			[
+				"applid",
+				"applink-form-id"
+			],
+			[
+				"glyp",
+				"glyphicon-calendar"
+			],
+			[
+				"remo",
+				"removeClass"
+			],
+			[
+				"tplap",
+				"tplParcela"
+			],
+			[
+				"tpl",
+				"tplparceles"
+			],
+			[
+				"parcel",
+				"parcelesTabs"
+			],
+			[
+				"etc",
+				"etc"
+			],
+			[
+				"remei",
+				"remei"
+			],
+			[
+				"date_crea",
+				"date_create_from_format"
+			],
+			[
+				"dawe",
+				"dateweborigin"
+			],
+			[
+				"datec",
+				"date_create_from_format"
+			],
+			[
+				"php",
+				"phpcredits"
+			],
+			[
+				"parcela",
+				"parcela"
+			],
+			[
+				"plaga",
+				"plaga"
+			],
+			[
+				"Nom_",
+				"nom_cientific"
+			],
+			[
+				"parent",
+				"parentId"
+			],
+			[
+				"pare",
+				"parentId"
+			],
+			[
+				"bs3see",
+				"bs3-select:h	bs3-select-h"
+			],
+			[
+				"d",
+				"del	Tag"
+			],
+			[
+				"modal",
+				"modalSize"
+			],
+			[
+				"button",
+				"bs3-button:default	bs3-button-default"
+			],
+			[
+				"ban",
+				"bancals"
+			],
+			[
+				"page",
+				"page"
+			],
+			[
+				"ale",
+				"alert"
+			],
+			[
+				"prim",
+				"primaryWrapper"
+			],
+			[
+				"bst",
+				"Bootstrap"
+			],
+			[
+				"bs3butt",
+				"bs3-button:info	bs3-button-info"
+			],
+			[
+				"bs3-htm",
+				"bs3-template:html5	bs3-html5-template"
+			],
+			[
+				"HORTAPP",
+				"hortapp_template"
+			],
+			[
+				"np",
+				"newPasword"
+			],
+			[
+				"id",
+				"id"
+			],
+			[
+				"quer",
+				"query_escaped"
+			],
+			[
+				"tasc",
+				"tasca_fixa"
+			],
+			[
+				"input",
+				"input	input - submit"
+			],
+			[
+				"bs3",
+				"bs3-panel:table	bs3-panel-table"
+			],
+			[
+				"bs3-",
+				"bs3-toolbar	bs3-button-toolbar"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "<?php\n    // This is the path to initialize.php, your site's gateway to the rest of the UF codebase!  Make sure that it is correct!\n    $init_path = \"../userfrosting/initialize.php\";\n\n    // This if-block just checks that the path for initialize.php is correct.  Remove this once you know what you're doing.\n    if (!file_exists($init_path)){\n        echo \"<h2>We can't seem to find our way to initialize.php!  Please check the require_once statement at the top of index.php, and make sure it contains the correct path to initialize.php.</h2><br>\";\n    }\n\n    require_once($init_path);\n\n    use UserFrosting as UF;\n   \n// Front page\n    $app->get('/', function () use ($app) {\n        // This if-block detects if mod_rewrite is enabled.\n        // This is just an anti-noob device, remove it if you know how to read the docs and/or breathe through your nose.\n        if (isset($_SERVER['SERVER_TYPE']) && ($_SERVER['SERVER_TYPE'] == \"Apache\") && !isset($_SERVER['HTTP_MOD_REWRITE'])) {\n            $app->render('errors/bad-config.twig');\n            exit;\n        }\n    \n        // Check that we can connect to the DB.  Again, you can remove this if you know what you're doing.\n        if (!UF\\Database::testConnection()){\n            // In case the error is because someone is trying to reinstall with new db info while still logged in, log them out\n            session_destroy();\n            // TODO: log out from remember me as well.\n            $controller = new UF\\AccountController($app);\n            return $controller->pageDatabaseError();\n        }\n    \n        // Forward to installation if not complete\n        // TODO: Is there any way to detect that installation was complete, but the DB is malfunctioning?\n        if (!isset($app->site->install_status) || $app->site->install_status == \"pending\"){\n            $app->redirect($app->urlFor('uri_install'));\n        }\n        \n        // Forward to the user's landing page (if logged in), otherwise take them to the home page\n        // This is probably where you, the developer, would start making changes if you need to change the default behavior.\n        if ($app->user->isGuest()){\n            $controller = new UF\\AccountController($app);\n            $controller->pageHome();\n        // If this is the first the root user is logging in, take them to site settings\n        } else if ($app->user->id == $app->config('user_id_master') && $app->site->install_status == \"new\"){\n            $app->site->install_status = \"complete\";\n            $app->site->store();\n            $app->alerts->addMessage(\"success\", \"Congratulations, you've successfully logged in for the first time.  Please take a moment to customize your site settings.\");\n            $app->redirect($app->urlFor('uri_settings'));  \n        } else {\n            $app->redirect($app->user->landing_page);        \n        }\n    })->name('uri_home');\n\n/********** FEATURE PAGES **********/\n    \n    $app->get('/dashboard/?', function () use ($app) {    \n        // Access-controlled page\n        if (!$app->user->checkAccess('uri_dashboard')){\n            $app->notFound();\n        }\n        \n        $app->render('dashboard.twig', []);          \n    });\n\n\n\n\n\n\n/************ HORTAPP ************/\n$app->get('/account/groups/?', function () use ($app) {   \n    // Access-controlled page\n    if (!$app->user->checkAccess('uri_account-groups')){\n        $app->notFound();\n    }   \n\n    $app->render('account-groups.twig', [\n        'groups' => $app->user->getGroups()\n    ]);  \n});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n    $app->get('/zerg/?', function () use ($app) {    \n        // Access-controlled page\n        if (!$app->user->checkAccess('uri_zerg')){\n            $app->notFound();\n        }\n        \n        $app->render('users/zerg.twig'); \n    });    \n       \n/********** ACCOUNT MANAGEMENT INTERFACE **********/\n    \n    $app->get('/account/:action/?', function ($action) use ($app) {    \n        // Forward to installation if not complete\n        if (!isset($app->site->install_status) || $app->site->install_status == \"pending\"){\n            $app->redirect($app->urlFor('uri_install'));\n        }\n    \n        $get = $app->request->get();\n        \n        $controller = new UF\\AccountController($app);\n    \n        $twig = $app->view()->getEnvironment();   \n        $loader = $twig->getLoader();\n          \n        switch ($action) {\n            case \"login\":               return $controller->pageLogin();\n            case \"logout\":              return $controller->logout(true); \n            case \"register\":            return $controller->pageRegister();         \n            case \"resend-activation\":   return $controller->pageResendActivation();\n            case \"forgot-password\":     return $controller->pageForgotPassword();\n            case \"activate\":            return $controller->activate();\n            case \"set-password\":        return $controller->pageSetPassword(true); \n            case \"reset-password\":      if (isset($get['confirm']) && $get['confirm'] == \"true\")\n                                            return $controller->pageSetPassword(false);\n                                        else\n                                            return $controller->denyResetPassword();\n            case \"captcha\":             return $controller->captcha();\n            case \"settings\":            return $controller->pageAccountSettings();\n            default:                    return $controller->page404();   \n        }\n    });\n\n    $app->post('/account/:action/?', function ($action) use ($app) {            \n        $controller = new UF\\AccountController($app);\n    \n        switch ($action) {\n            case \"login\":               return $controller->login();     \n            case \"register\":            return $controller->register();\n            case \"resend-activation\":   return $controller->resendActivation();\n            case \"forgot-password\":     return $controller->forgotPassword();\n            case \"set-password\":        return $controller->setPassword(true);\n            case \"reset-password\":      return $controller->setPassword(false);            \n            case \"settings\":            return $controller->accountSettings();\n            default:                    $app->notFound();\n        }\n    });    \n    \n/********** USER MANAGEMENT INTERFACE **********/\n    \n    // List users\n    $app->get('/users/?', function () use ($app) {\n        $controller = new UF\\UserController($app);\n        return $controller->pageUsers();\n    })->name('uri_users');    \n\n    // List users in a particular primary group\n    $app->get('/users/:primary_group/?', function ($primary_group) use ($app) {\n        $controller = new UF\\UserController($app);\n        return $controller->pageUsers($primary_group);\n    });\n    \n    // User info form (update/view)\n    $app->get('/forms/users/u/:user_id/?', function ($user_id) use ($app) {\n        $controller = new UF\\UserController($app);\n        $get = $app->request->get();        \n        if (isset($get['mode']) && $get['mode'] == \"update\")\n            return $controller->formUserEdit($user_id);\n        else\n            return $controller->formUserView($user_id);\n    });  \n\n    // User edit password form\n    $app->get('/forms/users/u/:user_id/password/?', function ($user_id) use ($app) {\n        $controller = new UF\\UserController($app);\n        $get = $app->request->get();        \n        return $controller->formUserEditPassword($user_id);\n    });\n    \n    // User creation form\n    $app->get('/forms/users/?', function () use ($app) {\n        $controller = new UF\\UserController($app);\n        return $controller->formUserCreate();\n    });\n    \n    // User info page\n    $app->get('/users/u/:user_id/?', function ($user_id) use ($app) {\n        $controller = new UF\\UserController($app);\n        return $controller->pageUser($user_id);\n    });       \n\n    // Create user\n    $app->post('/users/?', function () use ($app) {\n        $controller = new UF\\UserController($app);\n        return $controller->createUser();\n    });\n    \n    // Update user info\n    $app->post('/users/u/:user_id/?', function ($user_id) use ($app) {\n        $controller = new UF\\UserController($app);\n        return $controller->updateUser($user_id);\n    });       \n    \n    // Delete user\n    $app->post('/users/u/:user_id/delete/?', function ($user_id) use ($app) {\n        $controller = new UF\\UserController($app);\n        return $controller->deleteUser($user_id);\n    });\n    \n/********** GROUP MANAGEMENT INTERFACE **********/\n    \n    // List groups\n    $app->get('/groups/?', function () use ($app) {\n        $controller = new UF\\GroupController($app);\n        return $controller->pageGroups();\n    }); \n    \n    // List auth rules for a group\n    $app->get('/groups/g/:group_id/auth?', function ($group_id) use ($app) {\n        $controller = new UF\\GroupController($app);\n        return $controller->pageGroupAuthorization($group_id);\n    })->name('uri_authorization');  \n    \n    // Group info form (update/view)\n    $app->get('/forms/groups/g/:group_id/?', function ($group_id) use ($app) {\n        $controller = new UF\\GroupController($app);\n        $get = $app->request->get();        \n        if (isset($get['mode']) && $get['mode'] == \"update\")\n            return $controller->formGroupEdit($group_id);\n        else\n            return $controller->formGroupView($group_id);\n    });\n\n    // Group creation form\n    $app->get('/forms/groups/?', function () use ($app) {\n        $controller = new UF\\GroupController($app);\n        return $controller->formGroupCreate();\n    });    \n    \n    // Create group\n    $app->post('/groups/?', function () use ($app) {\n        $controller = new UF\\GroupController($app);\n        return $controller->createGroup();\n    });\n    \n    // Update group info\n    $app->post('/groups/g/:group_id/?', function ($group_id) use ($app) {\n        $controller = new UF\\GroupController($app);\n        return $controller->updateGroup($group_id);\n    });       \n\n    // Delete group\n    $app->post('/groups/g/:group_id/delete/?', function ($group_id) use ($app) {\n        $controller = new UF\\GroupController($app);\n        return $controller->deleteGroup($group_id);\n    });\n    \n/********** GROUP AUTH RULES INTERFACE **********/\n    \n    // Group auth creation form\n    $app->get('/forms/groups/g/:group_id/auth/?', function ($group_id) use ($app) {\n        $controller = new UF\\AuthController($app);\n        return $controller->formAuthCreate($group_id, \"group\");\n    });      \n    \n    // Group auth update form\n    $app->get('/forms/groups/auth/a/:rule_id/?', function ($rule_id) use ($app) {\n        $controller = new UF\\AuthController($app);\n        $get = $app->request->get();        \n        return $controller->formAuthEdit($rule_id);\n    });    \n\n    // Group auth create\n    $app->post('/groups/g/:group_id/auth/?', function ($group_id) use ($app) {\n        $controller = new UF\\AuthController($app);\n        return $controller->createAuthRule($group_id, \"group\");\n    });     \n\n    // Group auth update\n    $app->post('/groups/auth/a/:rule_id?', function ($rule_id) use ($app) {\n        $controller = new UF\\AuthController($app);\n        return $controller->updateAuthRule($rule_id, \"group\");\n    });\n    \n    // Group auth delete\n    $app->post('/auth/a/:rule_id/delete/?', function ($rule_id) use ($app) {\n        $controller = new UF\\AuthController($app);\n        $get = $app->request->get();        \n        return $controller->deleteAuthRule($rule_id);\n    });  \n        \n/************ ADMIN TOOLS *************/\n    \n    $app->get('/config/settings/?', function () use ($app) {\n        $controller = new UF\\AdminController($app);\n        return $controller->pageSiteSettings();\n    })->name('uri_settings');     \n    \n    $app->post('/config/settings/?', function () use ($app) {\n        $controller = new UF\\AdminController($app);\n        return $controller->siteSettings();        \n    });\n    \n    // Build the minified, concatenated CSS and JS\n    $app->get('/config/build', function() use ($app){\n        // Access-controlled page\n        if (!$app->user->checkAccess('uri_minify')){\n            $app->notFound();\n        }\n        \n        $app->schema->build(true);\n        $app->alerts->addMessageTranslated(\"success\", \"MINIFICATION_SUCCESS\");\n        $app->redirect($app->urlFor('uri_settings'));\n    });    \n    \n    // Slim info page\n    $app->get('/sliminfo/?', function () use ($app) {\n        // Access-controlled page\n        if (!$app->user->checkAccess('uri_slim_info')){\n            $app->notFound();\n        }\n        echo \"<pre>\";\n        print_r($app->environment());\n        echo \"</pre>\";\n    });\n\n    // PHP info page\n    $app->get('/phpinfo/?', function () use ($app) {\n        // Access-controlled page\n        if (!$app->user->checkAccess('uri_php_info')){\n            $app->notFound();\n        }    \n        echo \"<pre>\";\n        print_r(phpinfo());\n        echo \"</pre>\";\n    });\n\n    // Error log page\n    $app->get('/errorlog/?', function () use ($app) {\n        // Access-controlled page\n        if (!$app->user->checkAccess('uri_error_log')){\n            $app->notFound();\n        }\n        $log = $app->site->getLog();\n        echo \"<pre>\";\n        echo implode(\"<br>\",$log['messages']);\n        echo \"</pre>\";\n    });      \n       \n/************ INSTALLER *************/\n\n    $app->get('/install/?', function () use ($app) {\n        $controller = new UF\\InstallController($app);\n        if (isset($app->site->install_status)){\n            // If tables have been created, move on to master account setup\n            if ($app->site->install_status == \"pending\"){\n                $app->redirect($app->site->uri['public'] . \"/install/master\");\n            } else {\n                // Everything is set up, so go to the home page!\n                $app->redirect($app->urlFor('uri_home'));\n            }\n        } else {\n            return $controller->pageSetupDB();\n        }\n    })->name('uri_install');\n    \n    $app->get('/install/master/?', function () use ($app) {\n        $controller = new UF\\InstallController($app);\n        if (isset($app->site->install_status) && ($app->site->install_status == \"pending\")){\n            return $controller->pageSetupMasterAccount();\n        } else {\n            $app->redirect($app->urlFor('uri_install'));\n        }\n    });\n\n    $app->post('/install/:action/?', function ($action) use ($app) {\n        $controller = new UF\\InstallController($app);\n        switch ($action) {\n            case \"master\":            return $controller->setupMasterAccount();      \n            default:                  $app->notFound();\n        }   \n    });\n    \n/************ API *************/\n    \n    $app->get('/api/users/?', function () use ($app) {\n        $controller = new UF\\ApiController($app);\n        $controller->listUsers();\n    });\n    \n    \n/************ MISCELLANEOUS UTILITY ROUTES *************/\n    \n    // Generic confirmation dialog\n    $app->get('/forms/confirm/?', function () use ($app) {\n        $get = $app->request->get();\n        \n        // Load the request schema\n        $requestSchema = new \\Fortress\\RequestSchema($app->config('schema.path') . \"/forms/confirm-modal.json\");\n        \n        // Get the alert message stream\n        $ms = $app->alerts;         \n        \n        // Remove csrf_token\n        unset($get['csrf_token']);\n        \n        // Set up Fortress to process the request\n        $rf = new \\Fortress\\HTTPRequestFortress($ms, $requestSchema, $get);                    \n    \n        // Sanitize\n        $rf->sanitize();\n    \n        // Validate, and halt on validation errors.\n        if (!$rf->validate()) {\n            $app->halt(400);\n        }           \n        \n        $data = $rf->data();\n        \n        $app->render('components/common/confirm-modal.twig', $data);   \n    }); \n    \n    // Alert stream\n    $app->get('/alerts/?', function () use ($app) {\n        $controller = new UF\\BaseController($app);\n        $controller->alerts();\n    });\n    \n    // JS Config\n    $app->get($app->config('uri')['js-relative'] . '/config.js', function () use ($app) {\n        $controller = new UF\\BaseController($app);\n        $controller->configJS();\n    });\n    \n    // Theme CSS\n    $app->get($app->config('uri')['css-relative'] . '/theme.css', function () use ($app) {\n        $controller = new UF\\BaseController($app);\n        $controller->themeCSS();\n    });\n    \n    // Not found page (404)\n    $app->notFound(function () use ($app) {\n        if ($app->request->isGet()) {\n            $controller = new UF\\BaseController($app);\n            $controller->page404();\n        } else {\n            $app->alerts->addMessageTranslated(\"danger\", \"SERVER_ERROR\");\n        }\n    });\n    \n\n\n\n/******app run *******/\n    $app->run();",
+			"file": "public/index.php",
+			"file_size": 16795,
+			"file_write_time": 130945938692492056,
+			"settings":
+			{
+				"buffer_size": 16795,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "{% extends \"layouts/layout-dashboard.twig\" %}\n{% set page_group = \"dashboard\" %}\n\n{# Set page properties (page.*) here. #}\n{% block page %}\n    {# By putting this in a special block, we ensure that it will be set AFTER the default values are set in the parent template, \n    but BEFORE the page itself is rendered. #}    \n    {% set page = page | merge({\n        \"title\"       : \"Dashboard\",\n        \"description\" : \"Your user dashboard.\"\n    }) %}\n    {{ parent() }}\n{% endblock %}\n\n{% block content %}\n    <h1>User Groups</h1>\n    \n    <ul class=\"list-group\">\n    {% for group in groups %}\n        <li class=\"list-group-item\">\n              <i class=\"{{group.icon}} fa-fw\"></i> {{group.name}}\n        </li>\n    {% endfor %}\n    </ul>\n{% endblock %}",
+			"file": "userfrosting/templates/themes/default/account-groups.twig",
+			"file_size": 768,
+			"file_write_time": 130945914368620810,
+			"settings":
+			{
+				"buffer_size": 750,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/wamp/www/index.php",
+			"settings":
+			{
+				"buffer_size": 23862,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 2629 files for \"hortapp\"\n\nC:\\wamp\\www\\userfrosting\\public\\index.php:\n   68  \n   69  \n   70: /************ HORTAPP ************/\n   71  $app->get('/account/groups/?', function () use ($app) {   \n   72      // Access-controlled page\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\config-userfrosting-example.php:\n   43                  'db_host'  => 'localhost',\n   44                  'db_name'  => 'test',\n   45:                 'db_user'  => 'hortapp',\n   46:                 'db_pass'  => 'hortapp',\n   47                  'db_prefix'=> 'uf_'\n   48              ],\n   ..\n   92                  'db_host'  => 'localhost',\n   93                  'db_name'  => 'test',\n   94:                 'db_user'  => 'hortapp',\n   95:                 'db_pass'  => 'hortapp',\n   96                  'db_prefix'=> 'uf_'\n   97              ],\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\config-userfrosting.php:\n   43                  'db_host'  => 'localhost',\n   44                  'db_name'  => 'test',\n   45:                 'db_user'  => 'hortapp',\n   46:                 'db_pass'  => 'hortapp',\n   47                  'db_prefix'=> 'uf_'\n   48              ],\n   ..\n   92                  'db_host'  => 'localhost',\n   93                  'db_name'  => 'test',\n   94:                 'db_user'  => 'hortapp',\n   95:                 'db_pass'  => 'hortapp',\n   96                  'db_prefix'=> 'uf_'\n   97              ],\n\n9 matches across 3 files\n\n\nSearching 2629 files for \"render(\"\n\nC:\\wamp\\www\\userfrosting\\public\\index.php:\n   17          // This is just an anti-noob device, remove it if you know how to read the docs and/or breathe through your nose.\n   18          if (isset($_SERVER['SERVER_TYPE']) && ($_SERVER['SERVER_TYPE'] == \"Apache\") && !isset($_SERVER['HTTP_MOD_REWRITE'])) {\n   19:             $app->render('errors/bad-config.twig');\n   20              exit;\n   21          }\n   ..\n   60          }\n   61          \n   62:         $app->render('dashboard.twig', []);          \n   63      });\n   64  \n   ..\n   75      }   \n   76  \n   77:     $app->render('account-groups.twig', [\n   78          'groups' => $app->user->getGroups()\n   79      ]);  \n   ..\n  126          }\n  127          \n  128:         $app->render('users/zerg.twig'); \n  129      });    \n  130         \n  ...\n  448          $data = $rf->data();\n  449          \n  450:         $app->render('components/common/confirm-modal.twig', $data);   \n  451      }); \n  452      \n\nC:\\wamp\\www\\userfrosting\\public\\js\\lib\\morris.js:\n 1693          next = last + min + C * (value / total);\n 1694          seg = new Morris.DonutSegment(cx, cy, w * 2, w, last, next, this.data[i].color || this.options.colors[idx % this.options.colors.length], this.options.backgroundColor, idx, this.raphael);\n 1695:         seg.render();\n 1696          this.segments.push(seg);\n 1697          seg.on('hover', this.select);\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\controllers\\AccountController.php:\n   30       */\n   31      public function pageHome(){\n   32:         $this->_app->render('home.twig');  \n   33      }\n   34      \n   ..\n   47          $this->_app->jsValidator->setSchema($schema);\n   48          \n   49:         $this->_app->render('account/login.twig', [\n   50              'validators' => $this->_app->jsValidator->rules()\n   51          ]);\n   ..\n   86          }\n   87      \n   88:         $this->_app->render('account/register.twig', [\n   89              'captcha_image' =>  $this->generateCaptcha(),\n   90              'validators' => $this->_app->jsValidator->rules()\n   ..\n  104          $this->_app->jsValidator->setSchema($schema);  \n  105          \n  106:         $this->_app->render('account/forgot-password.twig', [\n  107              'validators' => $this->_app->jsValidator->rules()\n  108          ]);\n  ...\n  130              $template = 'account/reset-password.twig';\n  131          \n  132:         $this->_app->render($template, [\n  133              'secret_token' => $token,\n  134              'validators' => $this->_app->jsValidator->rules()\n  ...\n  148          $this->_app->jsValidator->setSchema($schema);         \n  149                   \n  150:         $this->_app->render('account/resend-activation.twig', [\n  151              'validators' => $this->_app->jsValidator->rules()\n  152          ]);\n  ...\n  170          $this->_app->jsValidator->setSchema($schema);         \n  171          \n  172:         $this->_app->render('account/account-settings.twig', [\n  173              \"locales\" => $this->_app->site->getLocales(),\n  174              \"validators\" => $this->_app->jsValidator->rules()\n  ...\n  184       */   \n  185      public function pageAccountCompromised(){\n  186:         $this->_app->render('errors/compromised.twig');\n  187      }      \n  188      \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\controllers\\AdminController.php:\n   40          $this->_app->applyHook(\"settings.register\");\n   41          \n   42:         $this->_app->render('config/site-settings.twig', [\n   43              'settings' => $this->_app->site->getRegisteredSettings(),\n   44              'info'     => $this->_app->site->getSystemInfo(),\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\controllers\\AuthController.php:\n   45          $group = Group::find($id);        \n   46          \n   47:         $this->_app->render(\"components/common/auth-info-form.twig\", [\n   48              \"box_id\" => $get['box_id'],\n   49              \"box_title\" => \"New Authorization Rule for Group '{$group->name}'\",\n   ..\n   81          $this->_app->jsValidator->setSchema($schema);     \n   82          \n   83:         $this->_app->render(\"components/common/auth-info-form.twig\", [\n   84              \"box_id\" => $get['box_id'],\n   85              \"box_title\" => \"Edit Authorization Rule for Group '{$group->name}'\",\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\controllers\\BaseController.php:\n   36       */\n   37      public function page404(){\n   38:         $this->_app->render('errors/404.twig');\n   39      }\n   40  \n   ..\n   47       */    \n   48      public function pageDatabaseError(){\n   49:         $this->_app->render('errors/database.twig');\n   50      }\n   51      \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\controllers\\GroupController.php:\n   39          $groups = Group::queryBuilder()->get();\n   40          \n   41:         $this->_app->render('groups/groups.twig', [\n   42              \"groups\" => $groups\n   43          ]);          \n   ..\n   55          $rules = GroupAuth::where('group_id', $group_id)->get();\n   56          \n   57:         $this->_app->render('config/authorization.twig', [\n   58              \"group\" => $group,\n   59              \"rules\" => $rules\n   ..\n  120          $this->_app->jsValidator->setSchema($schema);   \n  121          \n  122:         $this->_app->render($template, [\n  123              \"box_id\" => $get['box_id'],\n  124              \"box_title\" => \"New Group\",\n  ...\n  192          $this->_app->jsValidator->setSchema($schema);  \n  193          \n  194:         $this->_app->render($template, [\n  195              \"box_id\" => $get['box_id'],\n  196              \"box_title\" => \"Edit Group\",\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\controllers\\InstallController.php:\n   71          error_log(\"Done with checks\");\n   72          if (count($messages) > 0){\n   73:             $this->_app->render('install/install-errors.twig', [\n   74                  \"messages\" => $messages\n   75              ]);\n   ..\n  121              }\n  122              \n  123:             $this->_app->render('install/install-ready.twig', [\n  124                  \"messages\" => $messages\n  125              ]);        \n  ...\n  151          $this->_app->jsValidator->setSchema($schema);  \n  152          \n  153:         $this->_app->render('install/install-master.twig', [\n  154              'validators' => $this->_app->jsValidator->rules(),\n  155              'table_config' => Database::getSchemaTable('configuration')->name\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\controllers\\UserController.php:\n   70          }\n   71          \n   72:         $this->_app->render('users/users.twig', [\n   73              \"box_title\" => $name,\n   74              \"icon\" => $icon,\n   ..\n  138          $this->_app->jsValidator->setSchema($schema);             \n  139          \n  140:         $this->_app->render('users/user-info.twig', [\n  141              \"box_id\" => 'view-user',\n  142              \"alerts_id\" => 'form-view-user-alerts',\n  ...\n  238          $this->_app->jsValidator->setSchema($schema);        \n  239          \n  240:         $this->_app->render($template, [\n  241              \"box_id\" => $get['box_id'],\n  242              \"box_title\" => \"Create User\",\n  ...\n  330          $this->_app->jsValidator->setSchema($schema);  \n  331          \n  332:         $this->_app->render($template, [\n  333              \"box_id\" => $get['box_id'],\n  334              \"box_title\" => \"Edit User\",\n  ...\n  380          \n  381          // This form posts to the same resource as \"update user\"\n  382:         $this->_app->render(\"components/common/user-set-password.twig\", [\n  383              \"box_id\" => isset($get['box_id']) ? $get['box_id'] : 'user-set-password',\n  384              \"box_title\" => \"Change User Password\",\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\library\\HTMLPurifier\\Printer.php:\n   41       * @note Parameters vary depending on printer\n   42       */\n   43:     // function render() {}\n   44  \n   45      /**\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\library\\HTMLPurifier\\Printer\\ConfigForm.php:\n   91       * @return string\n   92       */\n   93:     public function render($config, $allowed = true, $render_controls = true)\n   94      {\n   95          if (is_array($config) && isset($config[0])) {\n   ..\n  195                  $type_obj = new HTMLPurifier_Printer_ConfigForm_NullDecorator($type_obj);\n  196              }\n  197:             $ret .= $type_obj->render($ns, $directive, $value, $this->name, array($this->genConfig, $this->config));\n  198              $ret .= $this->end('td');\n  199              $ret .= $this->end('tr');\n  ...\n  233       * @return string\n  234       */\n  235:     public function render($ns, $directive, $value, $name, $config)\n  236      {\n  237          if (is_array($config) && isset($config[0])) {\n  ...\n  268          $ret .= $this->text(' or ');\n  269          $ret .= $this->elementEmpty('br');\n  270:         $ret .= $this->obj->render($ns, $directive, $value, $name, array($gen_config, $config));\n  271          return $ret;\n  272      }\n  ...\n  296       * @return string\n  297       */\n  298:     public function render($ns, $directive, $value, $name, $config)\n  299      {\n  300          if (is_array($config) && isset($config[0])) {\n  ...\n  389       * @return string\n  390       */\n  391:     public function render($ns, $directive, $value, $name, $config)\n  392      {\n  393          if (is_array($config) && isset($config[0])) {\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\library\\HTMLPurifier\\Printer\\CSSDefinition.php:\n   12       * @return string\n   13       */\n   14:     public function render($config)\n   15      {\n   16          $this->def = $config->getCSSDefinition();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\library\\HTMLPurifier\\Printer\\HTMLDefinition.php:\n   13       * @return string\n   14       */\n   15:     public function render($config)\n   16      {\n   17          $ret = '';\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\plugins\\phorum\\settings\\form.php:\n   44      $htmlpurifier_form->setTextareaDimensions(23, 7); // widen a little, since we have space\n   45  \n   46:     $frm->addMessage($htmlpurifier_form->render(\n   47          $config, $PHORUM['mod_htmlpurifier']['directives'], false));\n   48  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\contracts\\Debug\\ExceptionHandler.php:\n   20  	 * @return \\Symfony\\Component\\HttpFoundation\\Response\n   21  	 */\n   22: 	public function render($request, Exception $e);\n   23  \n   24  	/**\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\contracts\\Pagination\\Paginator.php:\n  104  	 * @return string\n  105  	 */\n  106: 	public function render(Presenter $presenter = null);\n  107  \n  108  }\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\contracts\\Pagination\\Presenter.php:\n    8  	 * @return string\n    9  	 */\n   10: 	public function render();\n   11  \n   12  	/**\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\contracts\\Support\\Renderable.php:\n    8  	 * @return string\n    9  	 */\n   10: 	public function render();\n   11  \n   12  }\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\phpmailer\\phpmailer\\extras\\EasyPeasyICS.php:\n  106       * @return string The complete rendered vlal\n  107       */\n  108:     public function render($output = true)\n  109      {\n  110          //Add header\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\phpmailer\\phpmailer\\test\\phpmailerTest.php:\n 1123          $ICS->setName('test');\n 1124          $this->assertEquals('test', $ICS->getName(), 'Setting ICS name failed');\n 1125:         $this->assertNotEmpty($ICS->render(false), 'Empty calendar');\n 1126          //Need to test generated output but PHPUnit isn't playing nice\n 1127:         //$rendered = $ICS->render();\n 1128  \n 1129          //Test sending an ICS\n ....\n 1133          $this->Mail->isHTML(true);\n 1134          $this->buildBody();\n 1135:         $this->Mail->Ical = $ICS->render(false);\n 1136          $this->assertTrue($this->Mail->send(), $this->Mail->ErrorInfo);\n 1137      }\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\slim\\Slim\\Slim.php:\n  745       * delegated to the current View.\n  746       *\n  747:      * @param  string $template The name of the template passed into the view's render() method\n  748       * @param  array  $data     Associative array of data made available to the view\n  749       * @param  int    $status   The HTTP response status code to use (optional)\n  750       */\n  751:     public function render($template, $data = array(), $status = null)\n  752      {\n  753          if (!is_null($status)) {\n  ...\n 1030       * type of response: info, success, redirect, client error, or server error.\n 1031       * If you need to render a template AND customize the response status,\n 1032:      * use the application's `render()` method instead.\n 1033       *\n 1034       * @param  int      $status     The HTTP response status\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\slim\\Slim\\View.php:\n   39   * should subclass \\Slim\\View and implement this interface:\n   40   *\n   41:  * public render(string $template);\n   42   *\n   43   * This method should render the specified template and return\n   ..\n  253      public function fetch($template, $data = null)\n  254      {\n  255:         return $this->render($template, $data);\n  256      }\n  257  \n  ...\n  266       * @throws \\RuntimeException    If resolved template pathname is not a valid file\n  267       */\n  268:     protected function render($template, $data = null)\n  269      {\n  270          $templatePathname = $this->getTemplatePathname($template);\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\slim\\tests\\SlimTest.php:\n   34  class CustomView extends \\Slim\\View\n   35  {\n   36:     public function render($template, $data = null) { echo \"Custom view\"; }\n   37  }\n   38  \n   ..\n  629          $s = new \\Slim\\Slim(array('templates.path' => dirname(__FILE__) . '/templates'));\n  630          $s->get('/bar', function () use ($s) {\n  631:             $s->render('test.php', array('foo' => 'bar'));\n  632          });\n  633          $s->call();\n  ...\n  644          $s = new \\Slim\\Slim(array('templates.path' => dirname(__FILE__) . '/templates'));\n  645          $s->get('/bar', function () use ($s) {\n  646:             $s->render('test.php', array('foo' => 'bar'), 500);\n  647          });\n  648          $s->call();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\views\\Smarty.php:\n   83       * @return string\n   84       */\n   85:     public function render($template, $data = null)\n   86      {\n   87          $parser = $this->getInstance();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\views\\Twig.php:\n   82       * @return string\n   83       */\n   84:     public function render($template, $data = null)\n   85      {\n   86          $env = $this->getInstance();\n   ..\n   89          $data = array_merge($this->all(), (array) $data);\n   90  \n   91:         return $parser->render($data);\n   92      }\n   93  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\CHANGELOG:\n  774   * made cache and auto_reload options of Twig_Environment instead of arguments of Twig_Loader\n  775   * optimized template loading speed\n  776:  * removed output when an error occurs in a template and render() is used\n  777   * made major speed improvements for loops (up to 300% on even the smallest loops)\n  778   * added properties as part of the sandbox mode\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\doc\\api.rst:\n   49      $template = $twig->loadTemplate('index.html');\n   50  \n   51: To render the template with some variables, call the ``render()`` method::\n   52  \n   53:     echo $template->render(array('the' => 'variables', 'go' => 'here'));\n   54  \n   55  .. note::\n   ..\n   59  You can also load and render the template in one fell swoop::\n   60  \n   61:     echo $twig->render('index.html', array('the' => 'variables', 'go' => 'here'));\n   62  \n   63  .. _environment_options:\n   ..\n  189  ``@namespace_name/template_path`` notation::\n  190  \n  191:     $twig->render('@admin/index.html', array());\n  192  \n  193  ``Twig_Loader_Array``\n  ...\n  202      $twig = new Twig_Environment($loader);\n  203  \n  204:     echo $twig->render('index.html', array('name' => 'Fabien'));\n  205  \n  206  This loader is very useful for unit testing. It can also be used for small\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\doc\\intro.rst:\n   60      $twig = new Twig_Environment($loader);\n   61  \n   62:     echo $twig->render('index', array('name' => 'Fabien'));\n   63  \n   64  Twig uses a loader (``Twig_Loader_Array``) to locate templates, and an\n   65  environment (``Twig_Environment``) to store the configuration.\n   66  \n   67: The ``render()`` method loads the template passed as a first argument and\n   68  renders it with the variables passed as a second argument.\n   69  \n   ..\n   76      ));\n   77  \n   78:     echo $twig->render('index.html', array('name' => 'Fabien'));\n   79  \n   80  .. tip::\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\doc\\recipes.rst:\n  466      $twig = new Twig_Environment($loader);\n  467  \n  468:     echo $twig->render('index.twig', array('name' => 'Fabien'));\n  469  \n  470  Using different Template Sources\n  ...\n  490      $twig = new Twig_Environment($loader);\n  491  \n  492:     echo $twig->render('index.twig', array('name' => 'Fabien'));\n  493  \n  494  Now that the ``base.twig`` templates is defined in an array loader, you can\n  ...\n  510  \n  511      $template = $twig->createTemplate('hello {{ name }}');\n  512:     echo $template->render(array('name' => 'Fabien'));\n  513  \n  514  .. note::\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Environment.php:\n  343       * @throws Twig_Error_Runtime When an error occurred during rendering\n  344       */\n  345:     public function render($name, array $context = array())\n  346      {\n  347:         return $this->loadTemplate($name)->render($context);\n  348      }\n  349  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Extension\\Core.php:\n 1457      $result = null;\n 1458      try {\n 1459:         $result = $env->resolveTemplate($template)->render($variables);\n 1460      } catch (Twig_Error_Loader $e) {\n 1461          if (!$ignoreMissing) {\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\NodeVisitor\\Optimizer.php:\n  126       * It replaces:\n  127       *\n  128:      *   * \"echo $this->render(Parent)Block()\" with \"$this->display(Parent)Block()\"\n  129       *\n  130       * @param Twig_NodeInterface $node A Node\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Template.php:\n  359       * {@inheritdoc}\n  360       */\n  361:     public function render(array $context)\n  362      {\n  363          $level = ob_get_level();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\TemplateInterface.php:\n   30       * @return string The rendered template\n   31       */\n   32:     public function render(array $context);\n   33  \n   34      /**\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Test\\IntegrationTestCase.php:\n  183  \n  184              try {\n  185:                 $output = trim($template->render(eval($match[1].';')), \"\\n \");\n  186              } catch (Exception $e) {\n  187                  if (false !== $exception) {\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\test\\Twig\\Tests\\EnvironmentTest.php:\n   22      {\n   23          $env = new Twig_Environment();\n   24:         $env->render('test');\n   25      }\n   26  \n   ..\n   38          ));\n   39  \n   40:         $this->assertEquals('foo&lt;br/ &gt; foo&lt;br/ &gt;', $twig->render('html', array('foo' => 'foo<br/ >')));\n   41:         $this->assertEquals('foo\\x3Cbr\\x2F\\x20\\x3E foo\\x3Cbr\\x2F\\x20\\x3E', $twig->render('js', array('bar' => 'foo<br/ >')));\n   42      }\n   43  \n   ..\n   89          $twig->addGlobal('foo', 'bar');\n   90          $template = $twig->loadTemplate('index');\n   91:         $this->assertEquals('bar', $template->render(array()));\n   92  \n   93          /* to be uncomment in Twig 2.0\n   ..\n  176  \n  177          // render template\n  178:         $output = $twig->render('index', array('foo' => 'bar'));\n  179          $this->assertEquals('bar', $output);\n  180  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\test\\Twig\\Tests\\ErrorTest.php:\n   35          $template = $twig->loadTemplate('index.html');\n   36          try {\n   37:             $template->render(array());\n   38  \n   39              $this->fail();\n   ..\n   45  \n   46          try {\n   47:             $template->render(array('foo' => new Twig_Tests_ErrorTest_Foo()));\n   48  \n   49              $this->fail();\n   ..\n   66  \n   67          try {\n   68:             $template->render(array());\n   69  \n   70              $this->fail();\n   ..\n   76  \n   77          try {\n   78:             $template->render(array('foo' => new Twig_Tests_ErrorTest_Foo()));\n   79  \n   80              $this->fail();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\test\\Twig\\Tests\\Extension\\SandboxTest.php:\n   45      {\n   46          $twig = $this->getEnvironment(true, array(), self::$templates, array('block'));\n   47:         $twig->loadTemplate('1_child')->render(array());\n   48      }\n   49  \n   ..\n   51      {\n   52          $twig = $this->getEnvironment(false, array(), self::$templates);\n   53:         $this->assertEquals('FOO', $twig->loadTemplate('1_basic')->render(self::$params), 'Sandbox does nothing if it is disabled globally');\n   54  \n   55          $twig = $this->getEnvironment(true, array(), self::$templates);\n   56          try {\n   57:             $twig->loadTemplate('1_basic1')->render(self::$params);\n   58              $this->fail('Sandbox throws a SecurityError exception if an unallowed method is called');\n   59          } catch (Twig_Sandbox_SecurityError $e) {\n   ..\n   62          $twig = $this->getEnvironment(true, array(), self::$templates);\n   63          try {\n   64:             $twig->loadTemplate('1_basic2')->render(self::$params);\n   65              $this->fail('Sandbox throws a SecurityError exception if an unallowed filter is called');\n   66          } catch (Twig_Sandbox_SecurityError $e) {\n   ..\n   69          $twig = $this->getEnvironment(true, array(), self::$templates);\n   70          try {\n   71:             $twig->loadTemplate('1_basic3')->render(self::$params);\n   72              $this->fail('Sandbox throws a SecurityError exception if an unallowed tag is used in the template');\n   73          } catch (Twig_Sandbox_SecurityError $e) {\n   ..\n   76          $twig = $this->getEnvironment(true, array(), self::$templates);\n   77          try {\n   78:             $twig->loadTemplate('1_basic4')->render(self::$params);\n   79              $this->fail('Sandbox throws a SecurityError exception if an unallowed property is called in the template');\n   80          } catch (Twig_Sandbox_SecurityError $e) {\n   ..\n   83          $twig = $this->getEnvironment(true, array(), self::$templates);\n   84          try {\n   85:             $twig->loadTemplate('1_basic5')->render(self::$params);\n   86              $this->fail('Sandbox throws a SecurityError exception if an unallowed method (__toString()) is called in the template');\n   87          } catch (Twig_Sandbox_SecurityError $e) {\n   ..\n   90          $twig = $this->getEnvironment(true, array(), self::$templates);\n   91          try {\n   92:             $twig->loadTemplate('1_basic6')->render(self::$params);\n   93              $this->fail('Sandbox throws a SecurityError exception if an unallowed method (__toString()) is called in the template');\n   94          } catch (Twig_Sandbox_SecurityError $e) {\n   ..\n   97          $twig = $this->getEnvironment(true, array(), self::$templates);\n   98          try {\n   99:             $twig->loadTemplate('1_basic7')->render(self::$params);\n  100              $this->fail('Sandbox throws a SecurityError exception if an unallowed function is called in the template');\n  101          } catch (Twig_Sandbox_SecurityError $e) {\n  ...\n  104          $twig = $this->getEnvironment(true, array(), self::$templates, array(), array(), array('FooObject' => 'foo'));\n  105          FooObject::reset();\n  106:         $this->assertEquals('foo', $twig->loadTemplate('1_basic1')->render(self::$params), 'Sandbox allow some methods');\n  107          $this->assertEquals(1, FooObject::$called['foo'], 'Sandbox only calls method once');\n  108  \n  109          $twig = $this->getEnvironment(true, array(), self::$templates, array(), array(), array('FooObject' => '__toString'));\n  110          FooObject::reset();\n  111:         $this->assertEquals('foo', $twig->loadTemplate('1_basic5')->render(self::$params), 'Sandbox allow some methods');\n  112          $this->assertEquals(1, FooObject::$called['__toString'], 'Sandbox only calls method once');\n  113  \n  114          $twig = $this->getEnvironment(false, array(), self::$templates);\n  115          FooObject::reset();\n  116:         $this->assertEquals('foo', $twig->loadTemplate('1_basic5')->render(self::$params), 'Sandbox allows __toString when sandbox disabled');\n  117          $this->assertEquals(1, FooObject::$called['__toString'], 'Sandbox only calls method once');\n  118  \n  119          $twig = $this->getEnvironment(true, array(), self::$templates, array(), array('upper'));\n  120:         $this->assertEquals('FABIEN', $twig->loadTemplate('1_basic2')->render(self::$params), 'Sandbox allow some filters');\n  121  \n  122          $twig = $this->getEnvironment(true, array(), self::$templates, array('if'));\n  123:         $this->assertEquals('foo', $twig->loadTemplate('1_basic3')->render(self::$params), 'Sandbox allow some tags');\n  124  \n  125          $twig = $this->getEnvironment(true, array(), self::$templates, array(), array(), array(), array('FooObject' => 'bar'));\n  126:         $this->assertEquals('bar', $twig->loadTemplate('1_basic4')->render(self::$params), 'Sandbox allow some properties');\n  127  \n  128          $twig = $this->getEnvironment(true, array(), self::$templates, array(), array(), array(), array(), array('cycle'));\n  129:         $this->assertEquals('bar', $twig->loadTemplate('1_basic7')->render(self::$params), 'Sandbox allow some functions');\n  130  \n  131          foreach (array('getfoobar', 'getFoobar', 'getFooBar') as $name) {\n  132              $twig = $this->getEnvironment(true, array(), self::$templates, array(), array(), array('FooObject' => $name));\n  133              FooObject::reset();\n  134:             $this->assertEquals('foobarfoobar', $twig->loadTemplate('1_basic8')->render(self::$params), 'Sandbox allow methods in a case-insensitive way');\n  135              $this->assertEquals(2, FooObject::$called['getFooBar'], 'Sandbox only calls method once');\n  136  \n  137:             $this->assertEquals('foobarfoobar', $twig->loadTemplate('1_basic9')->render(self::$params), 'Sandbox allow methods via shortcut names (ie. without get/set)');\n  138          }\n  139      }\n  ...\n  147  \n  148          $twig = $this->getEnvironment(false, array(), self::$templates);\n  149:         $this->assertEquals('fooFOOfoo', $twig->loadTemplate('2_basic')->render(self::$params), 'Sandbox does nothing if disabled globally and sandboxed not used for the include');\n  150  \n  151          self::$templates = array(\n  ...\n  156          $twig = $this->getEnvironment(true, array(), self::$templates);\n  157          try {\n  158:             $twig->loadTemplate('3_basic')->render(self::$params);\n  159              $this->fail('Sandbox throws a SecurityError exception when the included file is sandboxed');\n  160          } catch (Twig_Sandbox_SecurityError $e) {\n  ...\n  173          ), array('macro', 'import'), array('escape'));\n  174  \n  175:         $this->assertEquals('<p>username</p>', $twig->loadTemplate('index')->render(array()));\n  176      }\n  177  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\test\\Twig\\Tests\\NativeExtensionTest.php:\n   26          $d1 = new DateTime();\n   27          $d2 = new DateTime();\n   28:         $output = $twig->render('index', compact('d1', 'd2'));\n   29  \n   30          // If it fails, PHP will crash.\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\test\\Twig\\Tests\\TemplateTest.php:\n   47  \n   48          try {\n   49:             $template->render($context);\n   50              $this->fail('Accessing an invalid attribute should throw an exception.');\n   51          } catch (Twig_Error_Runtime $e) {\n\n112 matches across 40 files\n\n\nSearching 2629 files for \" render(\"\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\library\\HTMLPurifier\\Printer.php:\n   41       * @note Parameters vary depending on printer\n   42       */\n   43:     // function render() {}\n   44  \n   45      /**\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\library\\HTMLPurifier\\Printer\\ConfigForm.php:\n   91       * @return string\n   92       */\n   93:     public function render($config, $allowed = true, $render_controls = true)\n   94      {\n   95          if (is_array($config) && isset($config[0])) {\n   ..\n  233       * @return string\n  234       */\n  235:     public function render($ns, $directive, $value, $name, $config)\n  236      {\n  237          if (is_array($config) && isset($config[0])) {\n  ...\n  296       * @return string\n  297       */\n  298:     public function render($ns, $directive, $value, $name, $config)\n  299      {\n  300          if (is_array($config) && isset($config[0])) {\n  ...\n  389       * @return string\n  390       */\n  391:     public function render($ns, $directive, $value, $name, $config)\n  392      {\n  393          if (is_array($config) && isset($config[0])) {\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\library\\HTMLPurifier\\Printer\\CSSDefinition.php:\n   12       * @return string\n   13       */\n   14:     public function render($config)\n   15      {\n   16          $this->def = $config->getCSSDefinition();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\ezyang\\htmlpurifier\\library\\HTMLPurifier\\Printer\\HTMLDefinition.php:\n   13       * @return string\n   14       */\n   15:     public function render($config)\n   16      {\n   17          $ret = '';\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\contracts\\Debug\\ExceptionHandler.php:\n   20  	 * @return \\Symfony\\Component\\HttpFoundation\\Response\n   21  	 */\n   22: 	public function render($request, Exception $e);\n   23  \n   24  	/**\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\contracts\\Pagination\\Paginator.php:\n  104  	 * @return string\n  105  	 */\n  106: 	public function render(Presenter $presenter = null);\n  107  \n  108  }\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\contracts\\Pagination\\Presenter.php:\n    8  	 * @return string\n    9  	 */\n   10: 	public function render();\n   11  \n   12  	/**\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\contracts\\Support\\Renderable.php:\n    8  	 * @return string\n    9  	 */\n   10: 	public function render();\n   11  \n   12  }\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\phpmailer\\phpmailer\\extras\\EasyPeasyICS.php:\n  106       * @return string The complete rendered vlal\n  107       */\n  108:     public function render($output = true)\n  109      {\n  110          //Add header\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\slim\\Slim\\Slim.php:\n  745       * delegated to the current View.\n  746       *\n  747:      * @param  string $template The name of the template passed into the view's render() method\n  748       * @param  array  $data     Associative array of data made available to the view\n  749       * @param  int    $status   The HTTP response status code to use (optional)\n  750       */\n  751:     public function render($template, $data = array(), $status = null)\n  752      {\n  753          if (!is_null($status)) {\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\slim\\Slim\\View.php:\n   39   * should subclass \\Slim\\View and implement this interface:\n   40   *\n   41:  * public render(string $template);\n   42   *\n   43   * This method should render the specified template and return\n   ..\n  266       * @throws \\RuntimeException    If resolved template pathname is not a valid file\n  267       */\n  268:     protected function render($template, $data = null)\n  269      {\n  270          $templatePathname = $this->getTemplatePathname($template);\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\slim\\tests\\SlimTest.php:\n   34  class CustomView extends \\Slim\\View\n   35  {\n   36:     public function render($template, $data = null) { echo \"Custom view\"; }\n   37  }\n   38  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\views\\Smarty.php:\n   83       * @return string\n   84       */\n   85:     public function render($template, $data = null)\n   86      {\n   87          $parser = $this->getInstance();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\slim\\views\\Twig.php:\n   82       * @return string\n   83       */\n   84:     public function render($template, $data = null)\n   85      {\n   86          $env = $this->getInstance();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\CHANGELOG:\n  774   * made cache and auto_reload options of Twig_Environment instead of arguments of Twig_Loader\n  775   * optimized template loading speed\n  776:  * removed output when an error occurs in a template and render() is used\n  777   * made major speed improvements for loops (up to 300% on even the smallest loops)\n  778   * added properties as part of the sandbox mode\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Environment.php:\n  343       * @throws Twig_Error_Runtime When an error occurred during rendering\n  344       */\n  345:     public function render($name, array $context = array())\n  346      {\n  347          return $this->loadTemplate($name)->render($context);\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Template.php:\n  359       * {@inheritdoc}\n  360       */\n  361:     public function render(array $context)\n  362      {\n  363          $level = ob_get_level();\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\TemplateInterface.php:\n   30       * @return string The rendered template\n   31       */\n   32:     public function render(array $context);\n   33  \n   34      /**\n\n23 matches across 18 files\n\n\nSearching 2629 files for \"doDisplay\"\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\CHANGELOG:\n  514   * made TRUE, FALSE, NONE equivalent to their lowercase counterparts\n  515   * wrapped all compilation and runtime exceptions with Twig_Error_Runtime and added logic to guess the template name and line\n  516:  * moved display() method to Twig_Template (generated templates should now use doDisplay() instead)\n  517  \n  518  * 1.0.0 (2011-03-27)\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\doc\\internals.rst:\n  121      class __TwigTemplate_1121b6f109fe93ebe8c6e22e3712bceb extends Twig_Template\n  122      {\n  123:         protected function doDisplay(array $context, array $blocks = array())\n  124          {\n  125              // line 1\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Node\\Module.php:\n  272      {\n  273          $compiler\n  274:             ->write(\"protected function doDisplay(array \\$context, array \\$blocks = array())\\n\", \"{\\n\")\n  275              ->indent()\n  276              ->subcompile($this->getNode('display_start'))\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Template.php:\n  379      {\n  380          try {\n  381:             $this->doDisplay($context, $blocks);\n  382          } catch (Twig_Error $e) {\n  383              if (!$e->getTemplateFile()) {\n  ...\n  404       * @param array $blocks  An array of blocks to pass to the template\n  405       */\n  406:     abstract protected function doDisplay(array $context, array $blocks = array());\n  407  \n  408      /**\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\test\\Twig\\Tests\\Node\\ModuleTest.php:\n   59      }\n   60  \n   61:     protected function doDisplay(array \\$context, array \\$blocks = array())\n   62      {\n   63          // line 1\n   ..\n  105      }\n  106  \n  107:     protected function doDisplay(array \\$context, array \\$blocks = array())\n  108      {\n  109          // line 2\n  ...\n  153      }\n  154  \n  155:     protected function doDisplay(array \\$context, array \\$blocks = array())\n  156      {\n  157          // line 4\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\test\\Twig\\Tests\\TemplateTest.php:\n  458      }\n  459  \n  460:     protected function doDisplay(array $context, array $blocks = array())\n  461      {\n  462      }\n\n9 matches across 6 files\n\n\nSearching 2629 files for \"return json\"\n\nC:\\wamp\\www\\userfrosting\\public\\js\\tablesorter\\widgets\\widget-output.js:\n  223  				}\n  224  			}\n  225: 			return json;\n  226  		},\n  227  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\templates\\themes\\default\\users\\users.twig:\n  198                          json.filteredRows = data['count_filtered']; // no filtering\n  199                          json.rows = $(rows);\n  200:                         return json;\n  201                      }\n  202                  }  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\alexweissman\\fortress\\fortress\\FormValidationAdapter.php:\n   43          }\n   44          if ($encode)\n   45:             return json_encode($client_rules, JSON_PRETTY_PRINT|JSON_FORCE_OBJECT);\n   46          else\n   47              return $client_rules;\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\alexweissman\\fortress\\fortress\\JqueryValidationAdapter.php:\n   52          \n   53          if ($string_encode)\n   54:             return json_encode($result, JSON_PRETTY_PRINT);\n   55          else\n   56              return $result;\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\database\\Eloquent\\Model.php:\n 2357  	public function toJson($options = 0)\n 2358  	{\n 2359: 		return json_encode($this->toArray(), $options);\n 2360  	}\n 2361  \n ....\n 2750  				return (bool) $value;\n 2751  			case 'object':\n 2752: 				return json_decode($value);\n 2753  			case 'array':\n 2754  			case 'json':\n 2755: 				return json_decode($value, true);\n 2756  			case 'collection':\n 2757  				return $this->newCollection(json_decode($value, true));\n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\support\\Collection.php:\n  789  	public function toJson($options = 0)\n  790  	{\n  791: 		return json_encode($this->toArray(), $options);\n  792  	}\n  793  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\support\\Fluent.php:\n   84  	public function toJson($options = 0)\n   85  	{\n   86: 		return json_encode($this->toArray(), $options);\n   87  	}\n   88  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\illuminate\\support\\MessageBag.php:\n  299  	public function toJson($options = 0)\n  300  	{\n  301: 		return json_encode($this->toArray(), $options);\n  302  	}\n  303  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\symfony\\translation\\Dumper\\JsonFileDumper.php:\n   42          }\n   43  \n   44:         return json_encode($messages->all($domain), $flags);\n   45      }\n   46  \n\nC:\\wamp\\www\\userfrosting\\userfrosting\\vendor\\twig\\twig\\lib\\Twig\\Extension\\Core.php:\n  639          }\n  640  \n  641:         return json_encode($value);\n  642      }\n  643  } else {\n  ...\n  658          }\n  659  \n  660:         return json_encode($value, $options);\n  661      }\n  662  }\n\n13 matches across 10 files\n",
+			"settings":
+			{
+				"buffer_size": 40855,
+				"line_ending": "Windows",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "userfrosting/templates/themes/default/users/users.twig",
+			"settings":
+			{
+				"buffer_size": 13538,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "userfrosting/vendor/twig/twig/lib/Twig/Template.php",
+			"settings":
+			{
+				"buffer_size": 20363,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "userfrosting/config-userfrosting.php",
+			"settings":
+			{
+				"buffer_size": 5622,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 196.0,
+		"last_filter": "remo",
+		"selected_items":
+		[
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"removep",
+				"Package Control: Remove Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"Package Control: remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"comm",
+				"Toggle Block Comment"
+			],
+			[
+				"picker",
+				"Color Picker"
+			],
+			[
+				"javsc",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"reinde",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"fold",
+				"Fold Comments"
+			],
+			[
+				"HTML",
+				"Set Syntax: HTML"
+			],
+			[
+				"COMM",
+				"Toggle Comment"
+			],
+			[
+				"bs3sele",
+				"Snippet: bs3-input-select-h"
+			],
+			[
+				"modal",
+				"Snippet: bs3-modal"
+			],
+			[
+				"bs3 moda",
+				"Snippet: bs3-modal"
+			],
+			[
+				"reindent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"javasc",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"buttondang",
+				"Snippet: bs3-button-danger"
+			],
+			[
+				"button",
+				"Snippet: bs3-button-default"
+			],
+			[
+				"remove",
+				"Emmet: Remove Tag"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"synta javasc",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"packag",
+				"Package Control: Add Channel"
+			],
+			[
+				"brow",
+				"Preferences: Browse Packages"
+			],
+			[
+				"jumbot",
+				"Snippet: bs3-jumbotron"
+			],
+			[
+				"minibu",
+				"Snippet: bs3-mini-button-warning"
+			],
+			[
+				"templ",
+				"Snippet: bs3-html5-template"
+			],
+			[
+				"java",
+				"Set Syntax: Java"
+			],
+			[
+				"xml",
+				"Set Syntax: XML"
+			],
+			[
+				"lorem",
+				"Snippet: HTML - Lorem Ipsum"
+			],
+			[
+				"emmet",
+				"Emmet: Balance (inward)"
+			],
+			[
+				"todo",
+				"Snippet: Comment - To-do list"
+			],
+			[
+				"comsin",
+				"Snippet: Comment - Single-line block comment"
+			],
+			[
+				"commblo",
+				"Snippet: Comment - Block style comment"
+			],
+			[
+				"blocom",
+				"Snippet: Comment - Block style comment"
+			],
+			[
+				"combl",
+				"Snippet: Comment - Block style comment"
+			],
+			[
+				"bloc",
+				"Toggle Block Comment"
+			],
+			[
+				"com todo",
+				"Snippet: Comment - To-do list"
+			],
+			[
+				"blcom",
+				"Toggle Block Comment"
+			],
+			[
+				"com bl",
+				"Snippet: Comment - Block style comment"
+			],
+			[
+				"comblo",
+				"Snippet: Comment - Block style comment"
+			],
+			[
+				"com",
+				"Toggle Block Comment"
+			],
+			[
+				"com func",
+				"Snippet: Comment - Full section comment"
+			],
+			[
+				"set php",
+				"Set Syntax: PHP"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"comsing",
+				"Snippet: Comment - Single-line block comment"
+			],
+			[
+				"docum",
+				"Snippet: $(document).ready"
+			],
+			[
+				"snipp",
+				"Snippet: <footer>"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"bs3-input-da",
+				"Snippet: bs3-input-date"
+			],
+			[
+				"syntax htm",
+				"Set Syntax: HTML"
+			],
+			[
+				"synthtml",
+				"Set Syntax: HTML"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			],
+			[
+				"",
+				"About"
+			],
+			[
+				"COM",
+				"Toggle Comment"
+			],
+			[
+				"comme",
+				"Toggle Comment"
+			],
+			[
+				"come",
+				"Toggle Comment"
+			],
+			[
+				"menu",
+				"View: Toggle Menu"
+			]
+		],
+		"width": 512.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) ",
+			" import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) ",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) ",
+			" import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/wamp/www/userfrosting",
+		"/C/wamp/www/userfrosting/public",
+		"/C/wamp/www/userfrosting/userfrosting",
+		"/C/wamp/www/userfrosting/userfrosting/controllers",
+		"/C/wamp/www/userfrosting/userfrosting/templates",
+		"/C/wamp/www/userfrosting/userfrosting/templates/themes",
+		"/C/wamp/www/userfrosting/userfrosting/templates/themes/default"
+	],
+	"file_history":
+	[
+		"/C/wamp/www/userfrosting/userfrosting/vendor/twig/twig/lib/Twig/TemplateInterface.php",
+		"/C/wamp/www/hortapp/post/templatePostFile.php",
+		"/C/wamp/www/hortapp/post/bancalAdd.php",
+		"/C/wamp/www/index.php",
+		"/C/wamp/bin/apache/apache2.4.9/conf/wampserver.conf",
+		"/C/wamp/www/userfrosting/userfrosting/.gitignore",
+		"/C/wamp/www/userfrosting/userfrosting/ (2).gitignore",
+		"/C/wamp/www/hortapp/hortapp-forms/formTascaPlanta.php",
+		"/C/wamp/www/hortapp/hortapp-html/debug.php",
+		"/C/wamp/www/hortapp/hortapp-forms/formDrop.php",
+		"/C/wamp/www/hortapp/hortapp-forms/formTascaFixa.php",
+		"/C/wamp/www/hortapp/hortapp-forms/formEvent.php",
+		"/C/wamp/www/hortapp/js/hortapp.js",
+		"/C/wamp/www/hortapp/js/hortapp-defaults.js",
+		"/C/wamp/www/hortapp/js/bootstrap-datepicker.min.js",
+		"/C/wamp/www/hortapp/css/bootstrap-datepicker3.standalone.min.css",
+		"/C/wamp/www/hortapp/css/bootstrap-datepicker.css",
+		"/C/wamp/www/hortapp/hortapp-forms/formTascaRemei.php",
+		"/var/www/html/hortapp/hortapp-forms/formRemeiPlaga.php",
+		"/var/www/html/hortapp/hortapp-forms/formPlantaPlaga.php",
+		"/var/www/html/hortapp/hortapp-forms/formRemei.php",
+		"/var/www/html/hortapp/hortapp-forms/formPlagaRemei.php",
+		"/home/sarri/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/var/www/html/hortapp/hortapp-forms/formPlagaPlanta.php",
+		"/var/www/html/hortapp/hortapp-forms/formPlaga.php",
+		"/home/sarri/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/var/www/html/hortapp/hortapp-forms/formTascaPlanta.php",
+		"/var/www/html/hortapp/hortapp-forms/formBancal.php",
+		"/var/www/html/hortapp/hortapp-forms/formCultiu.php",
+		"/var/www/html/hortapp/hortapp-forms/formEvent.php",
+		"/var/www/html/hortapp/hortapp-forms/formParcela.php",
+		"/var/www/html/hortapp/hortapp-forms/formImg.php",
+		"/var/www/html/hortapp/hortapp-forms/formPlanta.php",
+		"/var/www/html/hortapp/hortapp-forms/formRegister.php",
+		"/var/www/html/hortapp/hortapp-forms/formTascaFixa.php",
+		"/var/www/html/hortapp/hortapp-forms/formTascaRemei.php",
+		"/var/www/html/hortapp/js/jquery.validate.js",
+		"/var/www/html/hortapp/hortapp-forms/formDrop.php",
+		"/var/www/html/hortapp/hortapp-core/hortapp.getData.php",
+		"/var/www/html/hortapp/hortapp-core/getEvents.php",
+		"/C/wamp/www/hortapp/hortapp-forms/formBancal.php",
+		"/C/wamp/www/hortapp/log/hortapp.log",
+		"/C/wamp/www/hortapp/database.sql",
+		"/C/wamp/www/hortapp/.gitignore",
+		"/C/software/liferay-ide-updatesite-2.2.2-ga3-201501300730/build.uinformatica.properties",
+		"/C/wamp/www/hortapp/.git/info/exclude",
+		"/S/DADES/projectes/intranet/liferay-deploy-docs/configuracio_servidor correu liferay.txt",
+		"/S/DADES/projectes/intranet/liferay-deploy-docs/agenda-template_backup.vm",
+		"/C/eula.1028.txt",
+		"/C/opt/public/technology/epp/epp_build/36/eclipse.R-3.6.1-201009090800/artifacts.xml",
+		"/C/wamp/www/hortapp/js/jquery.validate.js",
+		"/C/wamp/www/hortapp/js/date-ca-ES.js",
+		"/C/Users/grivas/Desktop/merie/Avaluació en mediació_Maria Ribera Sendra.pdf",
+		"/C/wamp/www/fullcalendar-2.3.1/demos/php/get-events.php",
+		"/C/wamp/www/hortapp/footer.php",
+		"/C/wamp/www/hortapp/hortapp-core/getEvents.php",
+		"/C/wamp/www/hortapp/hortapp-forms/formPlanta.php",
+		"/C/wamp/www/hortapp/hortapp-core/hortapp.events.utils.php",
+		"/C/wamp/www/hortapp/hortapp-core/hortapp.getData.php",
+		"/C/wamp/www/hortapp/hortapp-core/hortapp.lib.php",
+		"/C/wamp/www/hortapp/hortapp-html/tplParcela.php",
+		"/C/wamp/www/hortapp/hortapp-forms/formCultiu.php",
+		"/C/wamp/www/hortapp/header.php",
+		"/C/wamp/www/bootstrap-datepicker-1.4.0-dist/js/bootstrap-datepicker.js",
+		"/C/wamp/www/bootstrap-datepicker-1.4.0-dist/locales/bootstrap-datepicker.ca.min.js",
+		"/C/wamp/www/bootstrap-datepicker-1.4.0-dist/css/bootstrap-datepicker3.standalone.css",
+		"/C/wamp/www/bootstrap-datepicker-1.4.0-dist/css/bootstrap-datepicker3.css",
+		"/C/wamp/www/hortapp/debug.php",
+		"/C/wamp/www/bootstrap-datepicker-1.4.0-dist/css/bootstrap-datepicker.standalone.css",
+		"/C/Users/grivas/AppData/Local/Apps/Windows 7 USB DVD Download Tool/Log/events.txt",
+		"/X/fotocopiadora/borra.txt",
+		"/C/wamp/www/hortapp/js/dataTables.bootstrap.js",
+		"/C/wamp/www/hortapp/hortapp-forms/formParcela.php",
+		"/C/wamp/www/hortapp/css/fix.css",
+		"/C/wamp/www/hortapp/hortapp-html/calendari.php",
+		"/C/wamp/www/hortapp/hortapp-html/tplParceles.php",
+		"/C/wamp/www/fullcalendar-2.3.1/lang/ca.js",
+		"/C/wamp/www/hortapp-web/js/calendari.js",
+		"/C/wamp/www/date-parser.php",
+		"/C/wamp/www/fullcalendar-2.3.1/demos/php/get-timezones.php",
+		"/C/wamp/www/fullcalendar-2.3.1/demos/php/utils.php",
+		"/C/wamp/www/fullcalendar-2.3.1/demos/json/events.json",
+		"/S/DADES/arxiu/Knowledge/MAGNOLIA/history_GILET_20110415.txt",
+		"/C/software/liferay-plugins-sdk-6.2/portlets/prova2-portlet/docroot/view.jsp",
+		"/C/software/liferay-plugins-sdk-6.2/build.grivas.properties",
+		"/S/DADES/arxiu/Knowledge/MAGNOLIA/esborrar_index_nofuncionadopv.txt",
+		"/C/software/liferay-plugins-sdk-6.2/portlets/build.xml",
+		"/C/wamp/www/hortapp/hortapp-html/bancal.php",
+		"/C/software/liferay-plugins-sdk-6.2/build.properties",
+		"/C/software/liferay-plugins-sdk-6.2/portlets/prova2-portlet/docroot/WEB-INF/liferay-display.xml",
+		"/C/software/apache-ant-1.9.4/README",
+		"/C/software/liferay-plugins-sdk-6.2/test.txt",
+		"/C/software/liferay-intranet/logs/liferay.2015-05-21.log",
+		"/C/software/liferay-intranet/tomcat-7.0.42/logs/localhost_access_log.2015-05-21.txt",
+		"/C/Users/grivas/Downloads/liferay-ide-updatesite-2.2.2-ga3-201501300730/tools/plugins/minimal-json_0.9.1.jar",
+		"/C/wamp/www/hortapp/js/raphael-min.js",
+		"/C/wamp/www/hortapp/hortapp-html/remei.php",
+		"/C/wamp/www/hortapp/hortapp-html/plantes.php",
+		"/C/wamp/www/hortapp/hortapp-html/remeis.php",
+		"/C/wamp/www/hortapp/hortapp-html/plagues.php",
+		"/C/wamp/www/hortapp/hortapp-html/planta.php",
+		"/C/wamp/www/hortapp/hortapp-html/plaga.php",
+		"/C/wamp/www/hortapp/hortapp-html/tplTascaRemei.php",
+		"/C/wamp/www/hortapp/hortapp-html/tplTascaPlanta.php",
+		"/S/DADES/arxiu/FASES DE TODO PROYECTO_PARA CONSULTAR EN OCASIONES RECORDAR I REIR I AU.txt",
+		"/S/DADES/arxiu/targetes_CPD.txt",
+		"/C/wamp/www/hortapp/hortapp-html/bancals.php",
+		"/C/Users/grivas/Desktop/OutlookContacts.csv",
+		"/C/Users/grivas/Desktop/OutlookContacts - copia.csv",
+		"/C/wamp/www/hortapp/js/date-ca-ES.js.txt",
+		"/C/wamp/www/hortapp/hortapp-html/bancal.php.bkp.php",
+		"/C/software/liferay-intranet/tomcat-7.0.42/webapps/ROOT/html/common/init.jsp",
+		"/C/software/liferay-intranet/tomcat-7.0.42/webapps/ROOT/html/common/error.jsp",
+		"/C/software/liferay-intranet/tomcat-7.0.42/webapps/ROOT/index.jsp",
+		"/C/Users/grivas/Dropbox/VcXsrv_archivo_config.xlaunch",
+		"/C/wamp/www/hortapp/hortapp-core/hortapp.user.php",
+		"/C/wamp/www/hortapp/login.php",
+		"/C/wamp/www/hortapp/js/bootstrap-datetimepicker.js",
+		"/C/wamp/www/hortapp/css/bootstrap-datetimepicker.min.css",
+		"/C/wamp/www/hortapp/css/bootstrap-datetimepicker.css",
+		"/C/wamp/www/hortapp/js/bootstrap-datetimepicker.min.js",
+		"/C/wamp/www/hortapp/js/bootstrap-datepicker.ca.min.js",
+		"/C/wamp/www/hortapp/js/locales/bootstrap-datepicker.ca.min.js",
+		"/C/wamp/www/hortapp/hortapp-forms/formPlagaRemei.php",
+		"/C/wamp/www/hortapp/hortapp-forms/formPlagaPlanta.php",
+		"/C/wamp/www/hortapp/hortapp-forms/formRemeiPlaga.php",
+		"/C/wamp/www/hortapp/hortapp-html/inici.php",
+		"/C/wamp/www/hortapp/index.php"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"C:\\wamp\\www\\userfrosting",
+			"C:\\wamp\\www\\hortapp",
+			"/var/www/html/hortapp/",
+			"/var/www/html/hortapp/ !/var/www/html/hortapp/js/",
+			"/var/www/html/hortapp/",
+			"/var/www/html/",
+			"/var/www/html/hortapp/",
+			"C:/wamp/www/hortapp/",
+			"/var/www/html/hortapp/",
+			"C:\\Program Files\\Sublime Text 3",
+			"/var/www/html/hortapp-webv0.2/",
+			"/var/www/html/hortapp-webv0.1/",
+			"/var/www/html/hortapp-webv0.2/",
+			"/var/www/html/hortapp-webv0.1/",
+			"/var/www/html/hortapp-webv0.2/",
+			"/var/www/html/hortapp-webv0.2/hortapp-html",
+			"/var/www/html/hortapp-webv0.2/hortapp-core",
+			"/var/www/html/hortapp-webv0.2/",
+			"/var/www/html/hortapp-web"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"return json",
+			"doDisplay",
+			" render(",
+			"render(",
+			"render",
+			"test",
+			"hortapp",
+			"mod_rew",
+			"\n\n",
+			"<Directory ",
+			"Directory",
+			"hortapp",
+			"insert into",
+			"bottom",
+			"posit",
+			"datepicker",
+			"fullcalendar(",
+			"fullcalendar(\"",
+			"fullcalen",
+			"defaul",
+			"mesures",
+			"4 c",
+			"name",
+			"4 c",
+			"4 co",
+			"4 ",
+			"det",
+			"4 c",
+			"4 ",
+			"4\"",
+			"4 c",
+			"required=\"\" ",
+			"required=\"\"",
+			"></div>",
+			"-8",
+			" contro",
+			"3",
+			"setRules",
+			"),tplModal",
+			"PlagaPlanta",
+			"case 'f",
+			"PlagaPlanta",
+			"aga",
+			"Parcela",
+			"name",
+			"orm-con",
+			"4",
+			"6",
+			"4",
+			"4 c",
+			"4 ",
+			"8",
+			"3",
+			"sm",
+			"3 c",
+			"4",
+			"formculti",
+			"getdiescultiu",
+			"datepicker(\"up",
+			" $(\".datepicker\").datepicker(\"update\", new Date(date));\n",
+			"	 $(\".datepicker\").datepicker(\"update\", new Date(date));\n",
+			"		 $(\".datepicker\").datepicker(\"update\", new Date(date));\n",
+			"datepick",
+			"moment.js",
+			"8",
+			"-3",
+			"form",
+			"formBancal",
+			"		",
+			".php",
+			"hidden",
+			"\"det",
+			"det",
+			"placeholder=\"\"",
+			"fullcal",
+			"fullcalendar",
+			"geteve",
+			"culti",
+			"setRulesBancal",
+			"var_dump",
+			"event",
+			"var_dump",
+			"this",
+			"toarr",
+			"eve",
+			"event",
+			"_GET",
+			"\n",
+			" $",
+			"_GET",
+			"ini",
+			"receive",
+			"Date",
+			"Dateç",
+			"Date",
+			"format",
+			"ini",
+			"?\";\n",
+			":",
+			"datepicker",
+			"datepi",
+			"event",
+			"data-provid",
+			"dpsembra_ini",
+			"datetim",
+			"datepicker table tr td span.active.disabled.active,\n.datepicker table tr td span.active:hover.disabled.active,\n.datepicker table tr td span.active.disabled.disabled.active,\n.datepicker table tr td span.active.disabled:hover.disabled.active,\n.datepicker table tr td span.active[disabled].active,\n.datepicker table tr td span.active:hover[disabled].active,\n.datepicker table tr td span.active.disabled[disabled].active,\n.datepicker table tr td span.active.disabled:hover[disabled].active,\nfieldset[disabled] .datepicker table tr td span.active.active,\nfieldset[disabled] .datepicker table tr td span.active:hover.active,\nfieldset[disabled] .datepicker table tr td span.active.disabled.active,\nfieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {\n  background-color: #428bca;\n  border-color: #357ebd;\n}\n.datepicker table tr td span.old,\n.datepicker table tr td span.new {\n  color: #999999;\n}\n.datepicker .datepicker-switch {\n  width: 145px;\n}\n.datepicker thead tr:first-child th,\n.datepicker tfoot tr th {\n  cursor: pointer;\n}\n.datepicker thead tr:first-child th:hover,\n.datepicker tfoot tr th:hover {\n  background: #eeeeee;\n}\n.datepicker .cw {\n  font-size: 10px;\n  width: 12px;\n  padding: 0 2px 0 5px;\n  vertical-align: middle;\n}\n.datepicker thead tr:first-child .cw {\n  cursor: default;\n  background-color: transparent;\n}\n.input-group.date .input-group-addon {\n  cursor: pointer;\n}\n.input-daterange {\n  width: 100%;\n}\n.input-daterange input {\n  text-align: center;\n}\n.input-daterange input:first-child {\n  border-radius: 3px 0 0 3px;\n}\n.input-daterange input:last-child {\n  border-radius: 0 3px 3px 0;\n}\n.input-daterange .input-group-addon {\n  width: auto;\n  min-width: 16px;\n  padding: 4px 5px;\n  font-weight: normal;\n  line-height: 1.42857143;\n  text-align: center;\n  text-shadow: 0 1px 0 #fff;\n  vertical-align: middle;\n  background-color: #eeeeee;\n  border: solid #cccccc;\n  border-width: 1px 0;\n  margin-left: -5px;\n  margin-right: -5px;\n}",
+			".datepicker.dropdown-menu ",
+			".datepicker.dropdown-menu th,\n.datepicker.datepicker-inline th,\n.datepicker.dropdown-menu td,\n.datepicker.datepicker-inline td",
+			"is_utf8",
+			"30/1",
+			"25/11",
+			"FromWeb",
+			"Sql",
+			"25/11",
+			"25",
+			"MES",
+			"Y\"",
+			"\"",
+			"dateFromWebDMY",
+			"     \n    ",
+			"     ",
+			"$",
+			"dateFromWebDMY",
+			"    $",
+			"\n    ",
+			"    $",
+			"dateSql",
+			" ="
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"	",
+			"'",
+			"tplForms",
+			"sticky",
+			"",
+			"familia",
+			"grup",
+			"{\n",
+			"data",
+			"    ",
+			"	",
+			"echo",
+			"",
+			"\"No",
+			"",
+			"<!-- Form Name -->\n<!--<legend></legend>-->"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "public/index.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16795,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3498,
+								3498
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 225.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "userfrosting/templates/themes/default/account-groups.twig",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 750,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								533,
+								533
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP-Twig/Syntaxes/HTML (Twig).tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/wamp/www/index.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 23862,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								898,
+								898
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 40855,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										116,
+										123
+									],
+									[
+										446,
+										453
+									],
+									[
+										494,
+										501
+									],
+									[
+										708,
+										715
+									],
+									[
+										756,
+										763
+									],
+									[
+										1028,
+										1035
+									],
+									[
+										1076,
+										1083
+									],
+									[
+										1290,
+										1297
+									],
+									[
+										1338,
+										1345
+									],
+									[
+										1808,
+										1815
+									],
+									[
+										1944,
+										1951
+									],
+									[
+										2054,
+										2061
+									],
+									[
+										2214,
+										2221
+									],
+									[
+										2355,
+										2362
+									],
+									[
+										2769,
+										2776
+									],
+									[
+										3020,
+										3027
+									],
+									[
+										3179,
+										3186
+									],
+									[
+										3361,
+										3368
+									],
+									[
+										3642,
+										3649
+									],
+									[
+										3883,
+										3890
+									],
+									[
+										4146,
+										4153
+									],
+									[
+										4397,
+										4404
+									],
+									[
+										4678,
+										4685
+									],
+									[
+										4920,
+										4927
+									],
+									[
+										5269,
+										5276
+									],
+									[
+										5569,
+										5576
+									],
+									[
+										5906,
+										5913
+									],
+									[
+										6055,
+										6062
+									],
+									[
+										6283,
+										6290
+									],
+									[
+										6504,
+										6511
+									],
+									[
+										6731,
+										6738
+									],
+									[
+										6958,
+										6965
+									],
+									[
+										7267,
+										7274
+									],
+									[
+										7456,
+										7463
+									],
+									[
+										7686,
+										7693
+									],
+									[
+										8013,
+										8020
+									],
+									[
+										8243,
+										8250
+									],
+									[
+										8498,
+										8505
+									],
+									[
+										8727,
+										8734
+									],
+									[
+										8963,
+										8970
+									],
+									[
+										9362,
+										9369
+									],
+									[
+										9579,
+										9586
+									],
+									[
+										9873,
+										9880
+									],
+									[
+										10126,
+										10133
+									],
+									[
+										10383,
+										10390
+									],
+									[
+										10570,
+										10577
+									],
+									[
+										10769,
+										10776
+									],
+									[
+										11076,
+										11083
+									],
+									[
+										11348,
+										11355
+									],
+									[
+										11659,
+										11666
+									],
+									[
+										11944,
+										11951
+									],
+									[
+										12151,
+										12158
+									],
+									[
+										12360,
+										12367
+									],
+									[
+										12543,
+										12550
+									],
+									[
+										12759,
+										12766
+									],
+									[
+										13082,
+										13089
+									],
+									[
+										13229,
+										13236
+									],
+									[
+										13408,
+										13415
+									],
+									[
+										13732,
+										13739
+									],
+									[
+										13969,
+										13976
+									],
+									[
+										14286,
+										14293
+									],
+									[
+										14559,
+										14566
+									],
+									[
+										14771,
+										14778
+									],
+									[
+										14962,
+										14969
+									],
+									[
+										15236,
+										15243
+									],
+									[
+										15489,
+										15496
+									],
+									[
+										15758,
+										15765
+									],
+									[
+										15992,
+										15999
+									],
+									[
+										16222,
+										16229
+									],
+									[
+										16421,
+										16428
+									],
+									[
+										16732,
+										16739
+									],
+									[
+										17091,
+										17098
+									],
+									[
+										17146,
+										17153
+									],
+									[
+										17330,
+										17337
+									],
+									[
+										17521,
+										17528
+									],
+									[
+										17683,
+										17690
+									],
+									[
+										17974,
+										17981
+									],
+									[
+										18195,
+										18202
+									],
+									[
+										18389,
+										18396
+									],
+									[
+										18616,
+										18623
+									],
+									[
+										18800,
+										18807
+									],
+									[
+										19047,
+										19054
+									],
+									[
+										19312,
+										19319
+									],
+									[
+										19415,
+										19422
+									],
+									[
+										19642,
+										19649
+									],
+									[
+										19908,
+										19915
+									],
+									[
+										20184,
+										20191
+									],
+									[
+										20441,
+										20448
+									],
+									[
+										20665,
+										20672
+									],
+									[
+										20970,
+										20977
+									],
+									[
+										21117,
+										21124
+									],
+									[
+										21252,
+										21259
+									],
+									[
+										21480,
+										21487
+									],
+									[
+										21632,
+										21639
+									],
+									[
+										21932,
+										21939
+									],
+									[
+										22056,
+										22063
+									],
+									[
+										22219,
+										22226
+									],
+									[
+										22343,
+										22350
+									],
+									[
+										22695,
+										22702
+									],
+									[
+										22906,
+										22913
+									],
+									[
+										23141,
+										23148
+									],
+									[
+										23488,
+										23495
+									],
+									[
+										23835,
+										23842
+									],
+									[
+										24193,
+										24200
+									],
+									[
+										24558,
+										24565
+									],
+									[
+										24936,
+										24943
+									],
+									[
+										25314,
+										25321
+									],
+									[
+										25763,
+										25770
+									],
+									[
+										26168,
+										26175
+									],
+									[
+										26527,
+										26534
+									],
+									[
+										26899,
+										26906
+									],
+									[
+										27128,
+										27135
+									],
+									[
+										27397,
+										27404
+									],
+									[
+										27668,
+										27675
+									],
+									[
+										28070,
+										28077
+									],
+									[
+										28351,
+										28358
+									],
+									[
+										28645,
+										28652
+									],
+									[
+										28959,
+										28966
+									],
+									[
+										29311,
+										29318
+									],
+									[
+										29553,
+										29560
+									],
+									[
+										29795,
+										29802
+									],
+									[
+										30216,
+										30224
+									],
+									[
+										30433,
+										30441
+									],
+									[
+										30642,
+										30650
+									],
+									[
+										30841,
+										30849
+									],
+									[
+										31040,
+										31048
+									],
+									[
+										31347,
+										31355
+									],
+									[
+										31619,
+										31627
+									],
+									[
+										31867,
+										31875
+									],
+									[
+										32074,
+										32082
+									],
+									[
+										32283,
+										32291
+									],
+									[
+										32466,
+										32474
+									],
+									[
+										32682,
+										32690
+									],
+									[
+										32963,
+										32971
+									],
+									[
+										33200,
+										33208
+									],
+									[
+										33469,
+										33477
+									],
+									[
+										33719,
+										33727
+									],
+									[
+										33993,
+										34001
+									],
+									[
+										34206,
+										34214
+									],
+									[
+										34436,
+										34444
+									],
+									[
+										34800,
+										34808
+									],
+									[
+										35167,
+										35175
+									],
+									[
+										35437,
+										35445
+									],
+									[
+										35694,
+										35702
+									],
+									[
+										36171,
+										36180
+									],
+									[
+										36437,
+										36446
+									],
+									[
+										36701,
+										36710
+									],
+									[
+										36999,
+										37008
+									],
+									[
+										37258,
+										37267
+									],
+									[
+										37477,
+										37486
+									],
+									[
+										37625,
+										37634
+									],
+									[
+										37773,
+										37782
+									],
+									[
+										38005,
+										38014
+									],
+									[
+										38258,
+										38269
+									],
+									[
+										38547,
+										38558
+									],
+									[
+										38784,
+										38795
+									],
+									[
+										39093,
+										39104
+									],
+									[
+										39346,
+										39357
+									],
+									[
+										39487,
+										39498
+									],
+									[
+										39573,
+										39584
+									],
+									[
+										39848,
+										39859
+									],
+									[
+										40055,
+										40066
+									],
+									[
+										40266,
+										40277
+									],
+									[
+										40465,
+										40476
+									],
+									[
+										40664,
+										40675
+									],
+									[
+										40767,
+										40778
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								38554,
+								38554
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 5,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 14265.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "userfrosting/templates/themes/default/users/users.twig",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13538,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9914,
+								9914
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP-Twig/Syntaxes/HTML (Twig).tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2612.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "userfrosting/vendor/twig/twig/lib/Twig/Template.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20363,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11365,
+								11374
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5860.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "userfrosting/config-userfrosting.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5622,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4402,
+								4402
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1275.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "userfrostingsublimeproject.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"dro",
+				"hortapp-forms/formDrop.php"
+			],
+			[
+				"tasfix",
+				"hortapp-forms/formTascaFixa.php"
+			],
+			[
+				"datpik",
+				"css/bootstrap-datepicker3.standalone.min.css"
+			],
+			[
+				"datepic",
+				"js/bootstrap-datepicker.min.js"
+			],
+			[
+				"defau",
+				"js/hortapp-defaults.js"
+			],
+			[
+				"formeve",
+				"hortapp-forms/formEvent.php"
+			],
+			[
+				"fortsm",
+				"hortapp-forms/formTascaRemei.php"
+			],
+			[
+				"formtaspl",
+				"hortapp-forms/formTascaPlanta.php"
+			],
+			[
+				"forplrem",
+				"hortapp-forms/formPlagaRemei.php"
+			],
+			[
+				"formreme",
+				"hortapp-forms/formRemei.php"
+			],
+			[
+				"formplanplag",
+				"hortapp-forms/formPlantaPlaga.php"
+			],
+			[
+				"remeipla",
+				"hortapp-forms/formRemeiPlaga.php"
+			],
+			[
+				"formplagplan",
+				"hortapp-forms/formPlagaPlanta.php"
+			],
+			[
+				"formplg",
+				"hortapp-forms/formPlaga.php"
+			],
+			[
+				"formtaspla",
+				"hortapp-forms/formTascaPlanta.php"
+			],
+			[
+				"formplagapla",
+				"hortapp-forms/formPlagaPlanta.php"
+			],
+			[
+				"formplan",
+				"hortapp-forms/formPlanta.php"
+			],
+			[
+				"formban",
+				"hortapp-forms/formBancal.php"
+			],
+			[
+				"parc",
+				"hortapp-forms/formParcela.php"
+			],
+			[
+				"formcu",
+				"hortapp-forms/formCultiu.php"
+			],
+			[
+				"debu",
+				"hortapp-html/debug.php"
+			],
+			[
+				"formplant",
+				"hortapp-forms/formPlanta.php"
+			],
+			[
+				"formpar",
+				"hortapp-forms/formParcela.php"
+			],
+			[
+				"formcul",
+				"hortapp-forms/formCultiu.php"
+			],
+			[
+				"rule",
+				"js/rules.js"
+			],
+			[
+				"hortap",
+				"js/hortapp.js"
+			],
+			[
+				"getd",
+				"hortapp-core/hortapp.getData.php"
+			],
+			[
+				"log",
+				"log\\hortapp.log"
+			],
+			[
+				"foot",
+				"footer.php"
+			],
+			[
+				"eve",
+				"hortapp-core\\getEvents.php"
+			],
+			[
+				"lib",
+				"hortapp-core\\hortapp.lib.php"
+			],
+			[
+				"defaul",
+				"js\\hortapp-defaults.js"
+			],
+			[
+				"planta",
+				"hortapp-forms\\formPlanta.php"
+			],
+			[
+				"tplparc",
+				"hortapp-html\\tplParcela.php"
+			],
+			[
+				"formev",
+				"hortapp-forms\\formEvent.php"
+			],
+			[
+				"formcult",
+				"hortapp-forms\\formCultiu.php"
+			],
+			[
+				"formvent",
+				"hortapp-forms\\formEvent.php"
+			],
+			[
+				"js",
+				"js\\hortapp.js"
+			],
+			[
+				"head",
+				"header.php"
+			],
+			[
+				"defa",
+				"js\\hortapp-defaults.js"
+			],
+			[
+				"hortapp.ge",
+				"hortapp-core\\hortapp.getData.php"
+			],
+			[
+				"formparc",
+				"hortapp-forms\\formParcela.php"
+			],
+			[
+				"heade",
+				"header.php"
+			],
+			[
+				"bancal",
+				"hortapp-html\\bancal.php"
+			],
+			[
+				"fix",
+				"css\\fix.css"
+			],
+			[
+				"tplparceles",
+				"hortapp-html\\tplParceles.php"
+			],
+			[
+				"bancal.",
+				"hortapp-html\\bancal.php"
+			],
+			[
+				"remei",
+				"hortapp-html\\remei.php"
+			],
+			[
+				"remeis",
+				"hortapp-html\\remeis.php"
+			],
+			[
+				"plag",
+				"hortapp-html\\plagues.php"
+			],
+			[
+				"plante",
+				"hortapp-html\\plantes.php"
+			],
+			[
+				"plague",
+				"hortapp-html\\plagues.php"
+			],
+			[
+				"plaga.",
+				"hortapp-html\\plaga.php"
+			],
+			[
+				"tpltascpl",
+				"hortapp-html\\tplTascaPlanta.php"
+			],
+			[
+				"planta.",
+				"hortapp-html\\planta.php"
+			],
+			[
+				"tpltasplant",
+				"hortapp-html\\tplTascaPlanta.php"
+			],
+			[
+				"tpltasreme",
+				"hortapp-html\\tplTascaRemei.php"
+			],
+			[
+				"remei.",
+				"hortapp-html\\remei.php"
+			],
+			[
+				"tpltaspla",
+				"hortapp-html\\tplTascaPlanta.php"
+			],
+			[
+				"plantes",
+				"hortapp-html\\plantes.php"
+			],
+			[
+				"bancals",
+				"hortapp-html\\bancals.php"
+			],
+			[
+				"tplpar",
+				"hortapp-html\\tplParcela.php"
+			],
+			[
+				"foote",
+				"footer.php"
+			],
+			[
+				"debug",
+				"hortapp-html\\debug.php"
+			],
+			[
+				"tplbanc",
+				"hortapp-html\\tplBancal.php"
+			],
+			[
+				"tplmoda",
+				"hortapp-html\\tplModalSmall.php"
+			],
+			[
+				"formdro",
+				"hortapp-forms\\formDrop.php"
+			],
+			[
+				"logi",
+				"login.php"
+			],
+			[
+				"getda",
+				"hortapp-core\\hortapp.getData.php"
+			],
+			[
+				"formevn",
+				"hortapp-forms\\formEvent.php"
+			],
+			[
+				"foo",
+				"footer.php"
+			],
+			[
+				"ebug",
+				"hortapp-html\\debug.php"
+			],
+			[
+				"tascafi",
+				"hortapp-forms\\formTascaFixa.php"
+			],
+			[
+				"formtaspun",
+				"hortapp-forms\\formTascaPuntual.php"
+			],
+			[
+				"tascapla",
+				"hortapp-forms\\formTascaPlanta.php"
+			],
+			[
+				"fortasrem",
+				"hortapp-forms\\formTascaRemei.php"
+			],
+			[
+				"formplareme",
+				"hortapp-forms\\formPlagaRemei.php"
+			],
+			[
+				"formplagapl",
+				"hortapp-forms\\formPlagaPlanta.php"
+			],
+			[
+				"inde",
+				"index.php"
+			],
+			[
+				"inici",
+				"hortapp-html\\inici.php"
+			],
+			[
+				"formbanc",
+				"hortapp-forms\\formBancal.php"
+			],
+			[
+				"formculti",
+				"hortapp-forms\\formCultiu.php"
+			],
+			[
+				"formplag",
+				"hortapp-forms\\formPlaga.php"
+			],
+			[
+				"tasplanta",
+				"hortapp-html\\tplTascaPlanta.php"
+			],
+			[
+				"get",
+				"hortapp-core\\proves_getData-test.php"
+			],
+			[
+				"plaplna",
+				"hortapp-forms\\formPlagaPlanta.php"
+			],
+			[
+				"banca",
+				"hortapp-html\\bancal.php"
+			],
+			[
+				"small",
+				"hortapp-html\\tplModalSmall.php"
+			],
+			[
+				"modal",
+				"hortapp-html\\tplModalMedium.php"
+			],
+			[
+				"tascpunt",
+				"hortapp-forms\\formTascaPuntual.php"
+			],
+			[
+				"fortasfi",
+				"hortapp-forms\\formTascaFixa.php"
+			],
+			[
+				"fortascfi",
+				"hortapp-forms\\formTascaFixa.php"
+			],
+			[
+				"plaplanta",
+				"hortapp-forms\\formPlagaPlanta.php"
+			],
+			[
+				"hortapp",
+				"js\\hortapp.js"
+			],
+			[
+				"plaremei",
+				"hortapp-forms\\formPlagaRemei.php"
+			],
+			[
+				"enci",
+				"hortapp-html\\enciclopedia.php"
+			],
+			[
+				"hortapp.js",
+				"js\\hortapp.js"
+			],
+			[
+				"footer",
+				"footer.php"
+			],
+			[
+				"header",
+				"header.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 233.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

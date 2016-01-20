@@ -1,0 +1,183 @@
+/* calendar css*******************************************************************/
+#calendar {
+
+}
+
+.fc-event:hover, .fc-week:hover{
+	cursor: pointer;
+}
+.fc-event.pendent{
+	background-color: #FCA7A7;
+	border: 0px;
+	color: #000000;
+	padding-top: 0.2em;
+}
+
+.fc-event.realitzada{	
+	background-color: #CEFAAD;
+	border: 0px;
+	color: #000000;
+	padding-top: 0.2em;
+}
+
+/* calendar css*******************************************************************/
+
+
+/* map css*************************************************************************/
+
+#map {
+	cursor: pointer;
+}
+
+.bancal_empty{
+	fill: #9DAB9C;
+}
+.bancal_empty:hover{
+	fill: #929E91;
+}
+
+
+.parcela_empty{
+	fill: #EECA6A;
+}
+.parcela_empty:hover{
+	fill: #D3B461;
+}
+
+.parcela_full{
+	fill: #497949;
+}
+.parcela_full:hover{
+	fill: #3A673A;
+}
+
+
+
+
+
+
+
+/* map css*************************************************************************/
+
+
+
+/*fix.css */
+/* corregix aspectes de presentació de bootstrap, com tamany de lletra, borders, etc.*/
+
+
+/* makes all elements with applink attribute present, look like a link (cursos change to pointer on hover)*/
+[applink]:hover{
+	cursor: pointer;
+}
+
+/*TO-DO : organitzar fitxer segons algun tipus d'agrupament*/
+
+	/* set font family*/
+	body {
+		font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
+	}
+/* fixes for existing bootstrap classes*/
+
+	/*collapsible fixes*/
+
+		/* reduix tamany de lletra del titol del panel. de 16px a 14px (estandar per a body)
+		*/
+		.panel-title-fix {
+			font-size: 14px;
+		}
+
+		/*elimina bordes de cada panel del acordeon*/
+
+		.panel-default-fix {
+		  border: none;
+
+		}
+
+		.panel-default > .panel-heading-fix {
+			background: #F5F5F5;
+			padding: 5px 15px;
+
+		}
+
+		.panel-body-fix {
+			background: #F5F5F5;
+		}
+
+	/* dropdown fixes
+		/*desplega el menu dropdown al pasar per damunt, en compte d'esperar al click*/
+		ul.nav li.dropdown:hover > ul.dropdown-menu {
+			display: block;    
+		}
+
+
+
+
+/* new classes*/
+	
+	/*add bottom padding to primary wrapper*/
+	#primaryWrapper{
+		padding-bottom: 20px;
+	}
+
+	/*no underline*/
+	.nounderline{
+		text-decoration: none !important;
+	}
+
+	/* no padding */
+	.nopadding{
+		padding: 0px !important;
+	}
+
+	/* no margin */
+	.nomargin{
+		margin: 0px !important;
+	}
+
+	/*margin-top for rows*/
+	.margin-top-20{
+		margin-top: 20px !important;
+	}
+
+	/*margin-top for rows*/
+	.margin-top-10{
+		margin-top: 10px !important;
+	}
+
+	/*margin-top for rows*/
+	.margin-top-bottom-5{
+		margin-top: 5px !important;
+		margin-bottom: 5px !important;
+	}
+
+	/*margin removal*/
+	.no-margin-fix {
+		margin: 0px !important;
+	}
+
+	.no-top-margin-fix {
+		margin-top: 0px !important;
+	}
+
+	.no-bottom-margin-fix {
+		margin-bottom: 0px !important;
+	}
+
+
+	/*alignment*/
+	/* NOT WORKING!!!*/
+	.pull-down {
+		vertical-align: baseline;
+	}
+
+
+
+	/* fix icon sizes*/
+	.icon-sm{
+		font-size: 80%;
+
+	}
+
+	.icon-big{
+		font-size: 140%;
+	}
